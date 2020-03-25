@@ -1,15 +1,17 @@
 import requests
 
+
 def get_data():
     """
     Get data from GBIF using its API
     """
-    response = requests.get(
-        "https://api.gbif.org/v1/occurrence/search?year=1800,1899",
-        params={"q":})
+    base_url = "https://api.gbif.org/v1/"
+    filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "institutionCode": "K", "kingdom": "Plantae"}
+    response = requests.get(f"{base_url}occurrence/search", params=filter)
     if response.status_code == 200:
         #print(response.headers["Date"])
-        print(response.json())
+        occurrences = response.json()
+        print(occurrences)
     elif response.status_code == 404:
         print('404: Page not found.')
     else:
