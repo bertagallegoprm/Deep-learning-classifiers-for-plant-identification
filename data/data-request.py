@@ -1,6 +1,25 @@
 import requests
 
 
+def get_taxon_key():
+    """
+    Get the GBIF taxon key for a given species name
+    using its API.
+    """
+    base_url = "https://api.gbif.org/v1/"
+    filter = {"name": "Quercus robur"}
+    response = requests.get(f"{base_url}species", params=filter)
+    if response.status_code == 200:
+        #print(response.headers["Date"])
+        occurrences = response.json()
+        print(f"Keys: {occurrences.keys()}")
+        print(f"Results: {occurrences['results']}")
+    elif response.status_code == 404:
+        print('404: Page not found.')
+    else:
+        print(":(")
+
+
 def get_data():
     """
     Get data from GBIF using its API
@@ -21,4 +40,5 @@ def get_data():
         print(":(")
 
 if __name__ == "__main__":
-    get_data()
+    get_taxon_key()
+    #get_data()
