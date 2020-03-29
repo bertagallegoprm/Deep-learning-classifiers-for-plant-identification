@@ -1,4 +1,6 @@
 import requests
+import urllib.request
+import os
 
 
 def get_taxon_key(species_list):
@@ -51,8 +53,40 @@ def get_occurence_key(species_dict):
     return occurences_dict
 
 
+def get_occurrence_image(species_dict):
+    """
+    Download image for the occurrences of the given species.
+    """
+    base_url = "https://api.gbif.org/v1/"
+    # "institutionCode": "K"
+    filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
+    for species_name, taxon_key in species_dict.items():
+        filter["taxonKey"]=taxon_key
+        response = requests.get(f"{base_url}occurrence/search", params=filter)
+        if response.status_code == 200:
+            occurrences = response.json()
+            for occurrence_no in range(0, len(occurrences)):
+                try:
+                    occurrence_url = occurrences["results"][occurrence_no]["media"][0]["identifier"]
+                    occurrence_key = occurrences["results"][occurrence_no]["key"]
+                    folder = "images"
+                    if not os.path.exists(folder):
+                        os.makedirs(folder)
+                    image_path = f"{folder}/{taxon_key}_{occurrence_key}_{occurrence_no}.jpg"
+                    urllib.request.urlretrieve(occurrence_url, image_path) 
+                except:
+                    print(f"Occurrence {occurrence_key} not downloaded for {species_name}")
+
+        elif response.status_code == 404:
+            print('Error 404: Page not found.')
+        else:
+            print("Error. Undetermined status code.")                                                     
+
+
 if __name__ == "__main__":
     species_list = ("quercus robur", "taxus baccata")
     species_dict = get_taxon_key(species_list)
     print(species_dict)
     print(get_occurence_key(species_dict))
+    #occurrence_key = "2013665032"
+    get_occurrence_image(species_dict)
