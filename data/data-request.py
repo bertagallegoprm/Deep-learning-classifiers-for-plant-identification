@@ -24,26 +24,35 @@ def get_taxon_key(species_list):
     return species_dict
 
 
-def get_data():
+def get_occurence_key(species_dict):
     """
     Get data from GBIF using its API
     """
     base_url = "https://api.gbif.org/v1/"
     # "institutionCode": "K"
-    filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN", "taxonKey": "328"}
-    response = requests.get(f"{base_url}occurrence/search", params=filter)
-    if response.status_code == 200:
-        #print(response.headers["Date"])
-        occurrences = response.json()
-        print(f"Keys: {occurrences.keys()}")
-        print(f"Results: {occurrences['results']}")
-        print(f"Number of occurrences: {occurrences['count']}")
-    elif response.status_code == 404:
-        print('404: Page not found.')
-    else:
-        print(":(")
+    filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
+    occurences_dict = {}
+    for key, value in species_dict.items():
+        filter["taxonKey"]=value
+        response = requests.get(f"{base_url}occurrence/search", params=filter)
+        if response.status_code == 200:
+            occurrences = response.json()
+            occurrences_results = occurrences.get("results",{})
+            species_occurence_dict = {}
+            for occurrence_no in range(0, len(occurrences_results)):
+                occurences_key = occurrences_results[occurrence_no].get("key")
+                species_occurence_dict[occurrence_no] = occurences_key        
+        elif response.status_code == 404:
+            print('Error 404: Page not found.')
+        else:
+            print("Error. Undetermined status code.")
+        occurences_dict[key]=species_occurence_dict
+        print(f"Number of occurrences for {key}: {occurrences['count']}")
+    return occurences_dict
+
 
 if __name__ == "__main__":
     species_list = ("quercus robur", "taxus baccata")
-    print(get_taxon_key(species_list))
-    #get_data()
+    species_dict = get_taxon_key(species_list)
+    print(species_dict)
+    print(get_occurence_key(species_dict))
