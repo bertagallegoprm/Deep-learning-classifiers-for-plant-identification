@@ -2,3 +2,4 @@
 *.log
 __pychache__
 .vscode
+data/images/*.jpg
