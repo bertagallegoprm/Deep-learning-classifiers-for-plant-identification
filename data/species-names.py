@@ -54,5 +54,16 @@ def native_trees_dict():
     }
     return tree_dict
 
+
+def native_trees_list():
+    """
+    Get list from dictionay in native_trees_dict(),
+    so that it can be used to request the speciesKey in GBIF.
+    """
+    tree_dict = native_trees_dict()
+    return list(tree_dict.keys())
+
+
 if __name__ == "__main__":
-    print(native_trees_dict())
+    print(native_trees_list())
+    assert len(native_trees_list()) == 46, "Incorrect number of native trees"
