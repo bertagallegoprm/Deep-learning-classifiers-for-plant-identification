@@ -26,7 +26,7 @@ def get_taxon_key(species_list):
     return species_dict
 
 
-def get_occurence_key(species_dict):
+def get_occurence_key(taxon_key_dict):
     """
     Get data from GBIF using its API
     """
@@ -34,8 +34,8 @@ def get_occurence_key(species_dict):
     # "institutionCode": "K"
     filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
     occurences_dict = {}
-    for key, value in species_dict.items():
-        filter["taxonKey"]=value
+    for species_name, taxon_key in taxon_key_dict.items():
+        filter["taxonKey"]=taxon_key
         response = requests.get(f"{base_url}occurrence/search", params=filter)
         if response.status_code == 200:
             occurrences = response.json()
@@ -48,19 +48,22 @@ def get_occurence_key(species_dict):
             print('Error 404: Page not found.')
         else:
             print("Error. Undetermined status code.")
-        occurences_dict[key]=species_occurence_dict
-        print(f"Number of occurrences for {key}: {occurrences['count']}")
+        occurences_dict[species_name]=species_occurence_dict
+        print(f"Number of occurrences for {species_name}: {occurrences['count']}")
     return occurences_dict
 
 
-def get_occurrence_image(species_dict):
+def get_occurrence_image(taxon_key_dict):
     """
     Download image for the occurrences of the given species.
+    Image naming format: 
+        taxon key + occurrence key + occurrence number
+        example: 2878688_1056970865_1.jpg
     """
     base_url = "https://api.gbif.org/v1/"
     # "institutionCode": "K"
     filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
-    for species_name, taxon_key in species_dict.items():
+    for species_name, taxon_key in taxon_key_dict.items():
         filter["taxonKey"]=taxon_key
         response = requests.get(f"{base_url}occurrence/search", params=filter)
         if response.status_code == 200:
@@ -85,8 +88,8 @@ def get_occurrence_image(species_dict):
 
 if __name__ == "__main__":
     species_list = ("quercus robur", "taxus baccata")
-    species_dict = get_taxon_key(species_list)
-    print(species_dict)
-    print(get_occurence_key(species_dict))
+    taxon_key_dict = get_taxon_key(species_list)
+    print(taxon_key_dict)
+    print(get_occurence_key(taxon_key_dict))
     #occurrence_key = "2013665032"
-    get_occurrence_image(species_dict)
+    get_occurrence_image(taxon_key_dict)
