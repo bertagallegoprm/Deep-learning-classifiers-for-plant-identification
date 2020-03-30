@@ -9,7 +9,7 @@ I am using `pipenv` to create a virtual environment and manage the dependencies.
 
 - Clone the repo from GitHub: 
 ```buildoutcfg
-git clone -b development https://github.com/bertagallegoprm/tfm.git
+git clone -b master https://github.com/bertagallegoprm/tfm.git
 ```
 
 > Add remote branches if required `git checkout -b branch-name origin/branch-name`
