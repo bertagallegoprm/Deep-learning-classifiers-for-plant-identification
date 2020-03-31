@@ -1,7 +1,8 @@
 import requests
 import urllib.request
 import os
-
+from species_names import native_trees_list
+from storage_handler import stop_if_size
 
 def get_taxon_key(species_list):
     """
@@ -16,9 +17,13 @@ def get_taxon_key(species_list):
     for species_name in species_list:
         response = requests.get(f"{base_url}{resource}?{parameter}={species_name}")
         if response.status_code == 200:
-            species = response.json()
-            species_key = species["speciesKey"]
-            species_dict[species_name] = species_key
+            try:
+                species = response.json()
+                species_key = species["speciesKey"]
+                species_dict[species_name] = species_key
+            except:
+                print(f"Unable to find speciesKey for {species_name}.")
+                pass
         elif response.status_code == 404:
             print('Error 404: Page not found.')
         else:
@@ -77,6 +82,7 @@ def get_occurrence_image(taxon_key_dict):
                         os.makedirs(folder)
                     image_path = f"{folder}/{taxon_key}_{occurrence_key}_{occurrence_no}.jpg"
                     urllib.request.urlretrieve(occurrence_url, image_path) 
+                    stop_if_size(10)
                 except:
                     print(f"Occurrence {occurrence_key} not downloaded for {species_name}")
 
@@ -87,7 +93,7 @@ def get_occurrence_image(taxon_key_dict):
 
 
 if __name__ == "__main__":
-    species_list = ("quercus robur", "taxus baccata")
+    species_list = native_trees_list()
     taxon_key_dict = get_taxon_key(species_list)
     print(taxon_key_dict)
     print(get_occurence_key(taxon_key_dict))
