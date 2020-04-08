@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 requests = "*"
 urllib3 = "*"
+tensorflow = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
