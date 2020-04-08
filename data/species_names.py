@@ -10,7 +10,7 @@ def british_trees_dict():
             "Frangula alnus": "alder buckthorn",
             "Fraxinus excelsior": "ash",
             "Populus tremula": "aspen",
-            "Fagus sylbatica": "common beech",
+            "Fagus sylvatica": "common beech",
             "Betula pubescens": "downy birch",
             "Betula pendula": "silver birch", 
             "Prunus spinosa": "blackthorn",
