@@ -3,6 +3,7 @@ import urllib.request
 import os
 from species_names import native_trees_list
 from storage_handler import stop_if_size
+from file_handler import open_report_file
 
 def get_taxon_key(species_list):
     """
@@ -92,10 +93,29 @@ def get_occurrence_image(taxon_key_dict):
             print("Error. Undetermined status code.")                                                     
 
 
+def species_without_speciesKey(species_list,taxon_key_dict):
+    species_with_taxon_keys = list(taxon_key_dict.keys())
+    diff = list(set(species_list) - set(species_with_taxon_keys))
+    if len(diff)==0:
+        print("All species have a speciesKey.")
+    else:
+        print(f"Species without a speciesKey:{diff}")
+    return diff
+
+
+
 if __name__ == "__main__":
+    # Query the API
     species_list = native_trees_list()
     taxon_key_dict = get_taxon_key(species_list)
     print(taxon_key_dict)
-    print(get_occurence_key(taxon_key_dict))
+    #print(get_occurence_key(taxon_key_dict))
     #occurrence_key = "2013665032"
-    get_occurrence_image(taxon_key_dict)
+    #get_occurrence_image(taxon_key_dict)
+    # Get the report with inputs, filters and outputs
+    report = open_report_file()
+    report.write(species_list)
+    report.write(taxon_key_dict)
+    ## Which input species don't have a taxon key?
+    report.write(f"Species without a speciesKey: {taxon_key_dict}")
+    report.close()
