@@ -9,6 +9,7 @@ verify_ssl = true
 requests = "*"
 urllib3 = "*"
 tensorflow = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
