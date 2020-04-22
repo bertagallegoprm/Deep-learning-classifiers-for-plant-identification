@@ -75,6 +75,7 @@ def get_occurrence_image(taxon_key_dict, report):
     base_url = "https://api.gbif.org/v1/"
     # "institutionCode": "K"
     filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
+    has_image_dict = {}
     for species_name, taxon_key in taxon_key_dict.items():
         filter["taxonKey"]=taxon_key
         response = requests.get(f"{base_url}occurrence/search", params=filter)
@@ -84,6 +85,7 @@ def get_occurrence_image(taxon_key_dict, report):
                 try:
                     occurrence_url = occurrences["results"][occurrence_no]["media"][0]["identifier"]
                     occurrence_key = occurrences["results"][occurrence_no]["key"]
+                    has_image_dict[occurrence_key]= "1"
                     folder = "images"
                     if not os.path.exists(folder):
                         os.makedirs(folder)
@@ -93,10 +95,12 @@ def get_occurrence_image(taxon_key_dict, report):
                 except:
                     print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
                     report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
+                    has_image_dict[occurrence_key]= "0"
         elif response.status_code == 404:
             print('Error 404: Page not found.')
         else:
-            print("Error. Undetermined status code.")                                                     
+            print("Error. Undetermined status code.")  
+    return has_image_dict                                                   
 
 
 def species_without_speciesKey(species_list,taxon_key_dict):
