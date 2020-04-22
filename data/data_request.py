@@ -93,9 +93,10 @@ def get_occurrence_image(taxon_key_dict, report):
                     urllib.request.urlretrieve(occurrence_url, image_path) 
                     stop_if_size(10)
                 except:
-                    print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
-                    report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
-                    has_image_dict[occurrence_key]= "0"
+                    pass
+            print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
+            report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
+            has_image_dict[occurrence_key]= "0"
         elif response.status_code == 404:
             print('Error 404: Page not found.')
         else:
@@ -140,7 +141,7 @@ if __name__ == "__main__":
     
 
     # Get GBIF keys for the given species
-    taxon_key_dict = get_taxon_key(species_list[:5], report)
+    taxon_key_dict = get_taxon_key(species_list[:3], report)
     report.write(f"Species list and key:{str(taxon_key_dict)}\n")
     report.write(f"Species without a speciesKey: {str(species_without_speciesKey(species_list,taxon_key_dict))}\n")
 
@@ -151,7 +152,7 @@ if __name__ == "__main__":
     #occurrence_key = "2013665032"
     
     # Download images for species occurrences
-    #get_occurrence_image(taxon_key_dict, report)
+    occurrence_has_image = get_occurrence_image(taxon_key_dict, report)
     
     # Close text file
     report.close()
@@ -166,5 +167,7 @@ if __name__ == "__main__":
             data_in_row.extend([species_name,taxon_key, occurrences[i]])         
             new_row = pd.DataFrame([data_in_row], columns=column_names)
             df = df.append(new_row, ignore_index=True)
-    print(df)
+    for occurence_key, has_image in occurrence_has_image.items():
+        print(occurence_key)
+        print(has_image)
 
