@@ -167,7 +167,9 @@ if __name__ == "__main__":
             data_in_row.extend([species_name,taxon_key, occurrences[i]])         
             new_row = pd.DataFrame([data_in_row], columns=column_names)
             df = df.append(new_row, ignore_index=True)
-    for occurence_key, has_image in occurrence_has_image.items():
-        print(occurence_key)
-        print(has_image)
+    #for occurence_key, has_image in occurrence_has_image.items():
+    #    print(occurence_key)
+     #   print(has_image)
+     #   df.loc[df["occurrence_key"]==occurence_key, ["has_image"]] = has_image
+    print(df)
 
