@@ -34,14 +34,13 @@ def get_taxon_key(species_list):
     return species_dict
 
 
-def get_occurence_key(species_list, filter):
+def get_occurence_key(species_taxon_key, filter):
     """
     Get data from GBIF using its API
     """
-    taxon_key_dict = get_taxon_key(species_list)
     base_url = "https://api.gbif.org/v1/"
     occurences_dict = {}
-    for species_name, taxon_key in taxon_key_dict.items():
+    for species_name, taxon_key in species_taxon_key.items():
         filter["taxonKey"]=taxon_key
         response = requests.get(f"{base_url}occurrence/search", params=filter)
         if response.status_code == 200:
@@ -60,7 +59,7 @@ def get_occurence_key(species_list, filter):
     return occurences_dict
 
 
-def get_occurrence_image(species_list, filter):
+def get_occurrence_image(species_occurrences_keys, filter):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
@@ -69,9 +68,8 @@ def get_occurrence_image(species_list, filter):
     """
     base_url = "https://api.gbif.org/v1/"
     has_image_dict = {}
-    occurrences_key = get_occurence_key(species_list, filter)
-    for species_name, occurrences in occurrences_key.items(): 
-        taxon_key = taxon_key_dict[species_name]     
+    for species_name, occurrences in species_occurrences_keys.items(): 
+        taxon_key = species_taxon_key[species_name]     
         for occurrence in range(0,(len(occurrences))):          
             occurrence_key = occurrences[occurrence]                
             filter["gbifID"]=occurrence_key
@@ -103,8 +101,8 @@ def get_occurrence_image(species_list, filter):
     return has_image_dict                                                   
 
 
-def species_without_speciesKey(species_list,taxon_key_dict):
-    species_with_taxon_keys = list(taxon_key_dict.keys())
+def species_without_speciesKey(species_list,species_taxon_key):
+    species_with_taxon_keys = list(species_taxon_key.keys())
     diff = list(set(species_list) - set(species_with_taxon_keys))
     if len(diff)==0:
         print("All species have a speciesKey.")
@@ -113,22 +111,19 @@ def species_without_speciesKey(species_list,taxon_key_dict):
     return diff
 
 
-def get_results_table(species_list, filter):
+def get_results_table(species_occurrences_keys, occurrence_has_image, filter):
     """
     Return a data frame with:
     - Species names.
     - Species keys (speciesKey/taxonKey)
     - Occurrences keys (key/gbifID)
     - Information about if the image has been downloaded (0 or 1)
-    """
-    taxon_key_dict = get_taxon_key(species_list)
-    occurrences_key = get_occurence_key(species_list, filter)
-    occurrence_has_image = get_occurrence_image(species_list, filter)
+    """   
     column_names = ["species_name", "taxon_key", "occurrence_key", "has_image"]
     df = pd.DataFrame(columns = column_names) 
-    for species_name, occurrences in occurrences_key.items():      
+    for species_name, occurrences in species_occurrences_keys.items():      
         for occurrence in range(0,(len(occurrences))):
-            taxon_key = taxon_key_dict[species_name]
+            taxon_key = species_taxon_key[species_name]
             data_in_row = []
             data_in_row.extend([species_name,taxon_key, occurrences[occurrence], ""])         
             new_row = pd.DataFrame([data_in_row], columns=column_names)
@@ -165,22 +160,24 @@ if __name__ == "__main__":
 
     # 2- Input species names
     species_list = native_trees_list()   
-    species_list = species_list[:3]
 
-    # 3- Get species kesy (same as taxon key) 
-    taxon_key_dict = get_taxon_key(species_list)
+    # 3- Get species keys (same as taxon key) 
+    species_taxon_key = get_taxon_key(species_list)
     ## Check if all species entered have a taxon key
-    species_without_speciesKey(species_list,taxon_key_dict)
+    species_without_speciesKey(species_list,species_taxon_key)
 
-    # 4- Get images 
-    has_image_dict = get_occurrence_image(species_list, filter)
+    # 4- Get occurrences keys 
+    species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
-    # 5-  Save results information for the applied filter
+    # 5- Get images from occurrences
+    occurrence_has_image = get_occurrence_image(species_occurrences_keys, filter)
+
+    # 6-  Save results information for the applied filter
     ## Hash the filter information + species list string to use it for naming the results file
     filter_and_species_information = filter_information + str(species_list)
     filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()
     ## Save results summary to csv file
-    result_df = get_results_table(species_list, filter)
+    result_df = get_results_table(species_occurrences_keys, occurrence_has_image, filter)
     request_result_to_csv(result_df, filter_hash)
     ## Save filter information to text file
     save_filter = open_filter_report(filter_hash)
