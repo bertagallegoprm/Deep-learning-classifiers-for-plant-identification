@@ -124,6 +124,26 @@ def species_without_speciesKey(species_list,taxon_key_dict):
     return diff
 
 
+def get_results_table(species_list, filter):
+    """
+    Return a data frame with the 
+    """
+    taxon_key_dict = get_taxon_key(species_list[:3], report)
+    occurrences_key = get_occurence_key(taxon_key_dict, filter, report)
+    occurrence_has_image = get_occurrence_image(taxon_key_dict, filter, report)
+    column_names = ["species_name", "taxon_key", "occurrence_key", "has_image"]
+    df = pd.DataFrame(columns = column_names) 
+    for species_name, occurrences in occurrences_key.items():      
+        for occurrence in range(0,(len(occurrences))):
+            taxon_key = taxon_key_dict[species_name]
+            data_in_row = []
+            data_in_row.extend([species_name,taxon_key, occurrences[occurrence], ""])         
+            new_row = pd.DataFrame([data_in_row], columns=column_names)
+            df = df.append(new_row, ignore_index = True)
+    for occurence_key, has_image in occurrence_has_image.items():
+        df.loc[df["occurrence_key"] == occurence_key, ["has_image"]] = has_image
+    df.sort_values(by=["taxon_key", "occurrence_key"])
+    return df
 
 if __name__ == "__main__":
     # Open report file
@@ -164,6 +184,7 @@ if __name__ == "__main__":
     # Download images for species occurrences
     occurrence_has_image = get_occurrence_image(taxon_key_dict, report)
     
+    print(get_results_table(species_list, filter))
     # Close text file
     report.close()
     
