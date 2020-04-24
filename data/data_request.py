@@ -183,3 +183,7 @@ if __name__ == "__main__":
     result_df = get_results_table(species_list, filter)
     request_result_to_csv(result_df, filter_hash)
 
+    # 5- Save filter information to text file
+    save_filter = open_filter_report(filter_hash)
+    save_filter.write(f"{str(filter_information)}\n")
+    save_filter.close()
