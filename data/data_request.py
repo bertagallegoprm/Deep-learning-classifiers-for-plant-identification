@@ -2,9 +2,10 @@ import requests
 import urllib.request
 import os
 import pandas as pd
+import hashlib
 from species_names import native_trees_list
 from storage_handler import stop_if_size
-from file_handler import request_result_to_csv
+from file_handler import request_result_to_csv, open_filter_report
 
 def get_taxon_key(species_list):
     """
@@ -24,7 +25,7 @@ def get_taxon_key(species_list):
                 species_key = species["speciesKey"]
                 species_dict[species_name] = species_key
             except:
-                print(f"Unable to find speciesKey for {species_name}.")
+                #print(f"Unable to find speciesKey for {species_name}.")
                 pass
         elif response.status_code == 404:
             print('Error 404: Page not found.')
@@ -39,7 +40,6 @@ def get_occurence_key(species_list, filter):
     """
     taxon_key_dict = get_taxon_key(species_list)
     base_url = "https://api.gbif.org/v1/"
-    # "institutionCode": "K"
     occurences_dict = {}
     for species_name, taxon_key in taxon_key_dict.items():
         filter["taxonKey"]=taxon_key
@@ -56,7 +56,7 @@ def get_occurence_key(species_list, filter):
         else:
             print("Error. Undetermined status code.")
         occurences_dict[species_name]=species_occurence_dict
-        print(f"Number of occurrences for {species_name}: {occurrences['count']}")
+        #print(f"Number of occurrences for {species_name}: {occurrences['count']}")
     return occurences_dict
 
 
@@ -86,18 +86,16 @@ def get_occurrence_image(species_list, filter):
                         if not os.path.exists(folder):
                             os.makedirs(folder)            
                         # Name and download file   
-                        image_path = f"{folder}/{taxon_key}_{occurrence_key}_{occurrence}.jpg"
+                        image_path = f"{folder}/{taxon_key}_{occurrence_key}.jpg"
                         urllib.request.urlretrieve(occurrence_url, image_path) 
                         has_image_dict[occurrence_key]= "1"
                         stop_if_size(10)
                     except:
-                        print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
-                        has_image_dict[occurrence_key]= "x"
-                except:
-                        print(f"{species_name}: Occurrence {occurrence_key} does not have a valid url.")
+                        #print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
                         has_image_dict[occurrence_key]= "0"
-                #except:
-                #    print(f"{species_name}: Unable to get occurrence key.")
+                except:
+                        #print(f"{species_name}: Occurrence {occurrence_key} does not have a valid url.")
+                        has_image_dict[occurrence_key]= "0"
             elif response.status_code == 404:
                 print('Error 404: Page not found.')
             else:
@@ -117,7 +115,11 @@ def species_without_speciesKey(species_list,taxon_key_dict):
 
 def get_results_table(species_list, filter):
     """
-    Return a data frame with the 
+    Return a data frame with:
+    - Species names.
+    - Species keys (speciesKey/taxonKey)
+    - Occurrences keys (key/gbifID)
+    - Information about if the image has been downloaded (0 or 1)
     """
     taxon_key_dict = get_taxon_key(species_list)
     occurrences_key = get_occurence_key(species_list, filter)
@@ -137,9 +139,6 @@ def get_results_table(species_list, filter):
     return df
 
 
-
-
-
 if __name__ == "__main__":
 
     # 1- Handle filter information  
@@ -148,28 +147,25 @@ if __name__ == "__main__":
     media_type = "StillImage"  
     country = "GB"
     has_coordinate = "False"
-    kingdom = "Plantae"
+    kingdom = ""
     basis_of_record = "PRESERVED_SPECIMEN"
+    institution_code = "" # K (RBG Kew)
     #############################################
 
-    filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record}
+    filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code}
     filter_information = f"""
     Filters:
-    mediaType: {media_type},
-    country: {country},
-    hasCoordinate: {has_coordinate},
-    kingdom:{kingdom},
-    basisOfRecord: {basis_of_record}.
+    mediaType: {media_type}
+    country: {country}
+    hasCoordinate: {has_coordinate}
+    kingdom:{kingdom}
+    basisOfRecord: {basis_of_record}
     """
     print(filter_information)
 
     # 2- Input species names
     species_list = native_trees_list()   
-    
-
-    # Get GBIF keys for the given species
-    #taxon_key_dict = get_taxon_key(species_list[:3])
-
+    species_list = species_list[:3]
 
     # 3- Get species kesy (same as taxon key) 
     taxon_key_dict = get_taxon_key(species_list)

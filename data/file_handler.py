@@ -33,7 +33,6 @@ def request_result_to_csv(df, filter_hash):
     are stored in a new file, while results
     from the same filter are overwriten.
     """
-    timestamp = get_timestamp()
     folder = "request_summary"
     if not os.path.exists(folder):
         os.makedirs(folder)
