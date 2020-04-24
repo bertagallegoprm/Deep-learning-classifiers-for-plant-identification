@@ -4,15 +4,14 @@ import os
 import pandas as pd
 from species_names import native_trees_list
 from storage_handler import stop_if_size
-from file_handler import open_report_file, request_result_to_csv
+from file_handler import request_result_to_csv
 
-def get_taxon_key(species_list, report):
+def get_taxon_key(species_list):
     """
     Get the GBIF taxon key for a given species name
     using its API.
     Return a dictionary for the species in the list passed as argument. 
     """
-    report.write("\nSPECIES TAXON KEY\n")
     base_url = "https://api.gbif.org/v1/"
     resource = "species/match"
     parameter = "name"
@@ -24,10 +23,8 @@ def get_taxon_key(species_list, report):
                 species = response.json()
                 species_key = species["speciesKey"]
                 species_dict[species_name] = species_key
-                report.write(f"{species_name}: {species_key}.\n")
             except:
                 print(f"Unable to find speciesKey for {species_name}.")
-                report.write(f"Unable to find speciesKey for {species_name}.\n")
                 pass
         elif response.status_code == 404:
             print('Error 404: Page not found.')
@@ -36,11 +33,10 @@ def get_taxon_key(species_list, report):
     return species_dict
 
 
-def get_occurence_key(taxon_key_dict, filter, report):
+def get_occurence_key(taxon_key_dict, filter):
     """
     Get data from GBIF using its API
     """
-    report.write("\nSPECIES OCCURRENCES\n")
     base_url = "https://api.gbif.org/v1/"
     # "institutionCode": "K"
     occurences_dict = {}
@@ -60,23 +56,19 @@ def get_occurence_key(taxon_key_dict, filter, report):
             print("Error. Undetermined status code.")
         occurences_dict[species_name]=species_occurence_dict
         print(f"Number of occurrences for {species_name}: {occurrences['count']}")
-        report.write(f"{species_name}: {occurrences['count']}\n")
     return occurences_dict
 
 
-def get_occurrence_image(taxon_key_dict, filter, report):
+def get_occurrence_image(taxon_key_dict, filter):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
         taxon key + occurrence key + occurrence number
         example: 2878688_1056970865_1.jpg
     """
-    report.write("\nOCCURRENCE IMAGES\n")
     base_url = "https://api.gbif.org/v1/"
-    # "institutionCode": "K"
-    filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
     has_image_dict = {}
-    occurrences_key = get_occurence_key(taxon_key_dict, filter, report)
+    occurrences_key = get_occurence_key(taxon_key_dict, filter)
     for species_name, occurrences in occurrences_key.items(): 
         taxon_key = taxon_key_dict[species_name]     
         for occurrence in range(0,(len(occurrences))):          
@@ -98,9 +90,7 @@ def get_occurrence_image(taxon_key_dict, filter, report):
                         has_image_dict[occurrence_key]= "1"
                         stop_if_size(10)
                     except:
-                    pass
                         print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
-                        report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
                         has_image_dict[occurrence_key]= "x"
                 except:
                         print(f"{species_name}: Occurrence {occurrence_key} does not have a valid url.")
@@ -128,9 +118,9 @@ def get_results_table(species_list, filter):
     """
     Return a data frame with the 
     """
-    taxon_key_dict = get_taxon_key(species_list[:3], report)
-    occurrences_key = get_occurence_key(taxon_key_dict, filter, report)
-    occurrence_has_image = get_occurrence_image(taxon_key_dict, filter, report)
+    taxon_key_dict = get_taxon_key(species_list[:3])
+    occurrences_key = get_occurence_key(taxon_key_dict, filter)
+    occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
     column_names = ["species_name", "taxon_key", "occurrence_key", "has_image"]
     df = pd.DataFrame(columns = column_names) 
     for species_name, occurrences in occurrences_key.items():      
@@ -145,10 +135,11 @@ def get_results_table(species_list, filter):
     df.sort_values(by=["taxon_key", "occurrence_key"])
     return df
 
+
+
+
+
 if __name__ == "__main__":
-    # Open report file
-    report = open_report_file()
-    report.write("DATA REQUEST FOR SPECIES IN GBIF\n")
 
     # Write filter  
     media_type = "StillImage"  
@@ -157,7 +148,7 @@ if __name__ == "__main__":
     kingdom = "Plantae"
     basis_of_record = "PRESERVED_SPECIMEN"
     filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record}
-    report.write(f"""
+    print(f"""
     Filters:
     mediaType: {media_type},
     country = {country}
@@ -171,38 +162,17 @@ if __name__ == "__main__":
     
 
     # Get GBIF keys for the given species
-    taxon_key_dict = get_taxon_key(species_list[:3], report)
-    report.write(f"Species list and key:{str(taxon_key_dict)}\n")
-    report.write(f"Species without a speciesKey: {str(species_without_speciesKey(species_list,taxon_key_dict))}\n")
+    #taxon_key_dict = get_taxon_key(species_list[:3])
 
 
     # Apply filter to find species occurrences
-    occurrences_key = get_occurence_key(taxon_key_dict, filter, report)
-    report.write(f"Occurrences by species: {str(occurrences_key)}\n")
+    #occurrences_key = get_occurence_key(taxon_key_dict, filter)
     #occurrence_key = "2013665032"
     
     # Download images for species occurrences
-    occurrence_has_image = get_occurrence_image(taxon_key_dict, report)
+    #occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
     
     result_df = get_results_table(species_list, filter)
     print(result_df)
     request_result_to_csv(result_df)
-    # Close text file
-    report.close()
-    
-    # Get dataframe with results
-    column_names = ["species_name", "taxon_key", "occurrence_key"]
-    df = pd.DataFrame(columns = column_names) 
-    for species_name, occurrences in occurrences_key.items():      
-        for i in range(0,(len(occurrences)-1)):
-            taxon_key = taxon_key_dict[species_name]
-            data_in_row = []
-            data_in_row.extend([species_name,taxon_key, occurrences[i]])         
-            new_row = pd.DataFrame([data_in_row], columns=column_names)
-            df = df.append(new_row, ignore_index=True)
-    #for occurence_key, has_image in occurrence_has_image.items():
-    #    print(occurence_key)
-     #   print(has_image)
-     #   df.loc[df["occurrence_key"]==occurence_key, ["has_image"]] = has_image
-    print(df)
 
