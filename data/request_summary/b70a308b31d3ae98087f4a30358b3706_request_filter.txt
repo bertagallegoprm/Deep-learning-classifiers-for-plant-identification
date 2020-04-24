@@ -1,8 +1,0 @@
-
-    Filters:
-    mediaType: StillImage,
-    country: GB,
-    hasCoordinate: True,
-    kingdom:Plantae,
-    basisOfRecord: PRESERVED_SPECIMEN.
-    
