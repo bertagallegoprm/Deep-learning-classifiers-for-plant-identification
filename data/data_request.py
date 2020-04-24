@@ -141,21 +141,29 @@ def get_results_table(species_list, filter):
 
 if __name__ == "__main__":
 
-    # Write filter  
+    # 1- Handle filter information  
+
+    ###### Edit for a different search ############
     media_type = "StillImage"  
     country = "GB"
-    has_coordinate = "True"
+    has_coordinate = "False"
     kingdom = "Plantae"
     basis_of_record = "PRESERVED_SPECIMEN"
+    #############################################
+
     filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record}
-    print(f"""
+    filter_information = f"""
     Filters:
     mediaType: {media_type},
-    country = {country}
-    hasCoordinate = {has_coordinate}
-    kingdom = {kingdom}
-    basisOfRecord = {basis_of_record}
-    """)
+    country: {country},
+    hasCoordinate: {has_coordinate},
+    kingdom:{kingdom},
+    basisOfRecord: {basis_of_record}.
+    """
+    print(filter_information)
+
+    ## Hash the filter information string to use it for naming the results file
+    filter_hash = hashlib.md5(str.encode(filter_information)).hexdigest()
 
     # Input species 
     species_list = native_trees_list()
@@ -173,6 +181,5 @@ if __name__ == "__main__":
     #occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
     
     result_df = get_results_table(species_list, filter)
-    print(result_df)
-    request_result_to_csv(result_df)
+    request_result_to_csv(result_df, filter_hash)
 

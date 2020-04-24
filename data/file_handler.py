@@ -27,16 +27,20 @@ def open_report_file():
     return open(text_file_name, "w")
 
 
-def request_result_to_csv(df):
+def request_result_to_csv(df, filter_hash):
     """
-    Create a CSV file given a dataset
-    stored into a data frame object.
+    Create a CSV file with the results
+    of the data request to GBIF
+    and name it with a hash of the filter applied.
+    Results from different filters 
+    are stored in a new file, while results
+    from the same filter are overwriten.
     """
     timestamp = get_timestamp()
     folder = "request_summary"
     if not os.path.exists(folder):
         os.makedirs(folder)
-    csv_file_name = f"{folder}/{timestamp}_request_summary.csv"
+    csv_file_name = f"{folder}/request_summary_{filter_hash}.csv"
     df.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8") 
     print(""+csv_file_name+" file created.")
 
