@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from species_names import native_trees_list
 from storage_handler import stop_if_size
-from file_handler import open_report_file
+from file_handler import open_report_file, request_result_to_csv
 
 def get_taxon_key(species_list, report):
     """
@@ -184,7 +184,9 @@ if __name__ == "__main__":
     # Download images for species occurrences
     occurrence_has_image = get_occurrence_image(taxon_key_dict, report)
     
-    print(get_results_table(species_list, filter))
+    result_df = get_results_table(species_list, filter)
+    print(result_df)
+    request_result_to_csv(result_df)
     # Close text file
     report.close()
     
