@@ -180,10 +180,14 @@ if __name__ == "__main__":
     # Download images for species occurrences
     #occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
     
+    # 5-  Save results information for the applied filter
+    ## Hash the filter information + species list string to use it for naming the results file
+    filter_and_species_information = filter_information + str(species_list)
+    filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()
+    ## Save results summary to csv file
     result_df = get_results_table(species_list, filter)
     request_result_to_csv(result_df, filter_hash)
-
-    # 5- Save filter information to text file
+    ## Save filter information to text file
     save_filter = open_filter_report(filter_hash)
     save_filter.write(f"{str(filter_information)}\n")
     save_filter.close()
