@@ -33,10 +33,11 @@ def get_taxon_key(species_list):
     return species_dict
 
 
-def get_occurence_key(taxon_key_dict, filter):
+def get_occurence_key(species_list, filter):
     """
     Get data from GBIF using its API
     """
+    taxon_key_dict = get_taxon_key(species_list)
     base_url = "https://api.gbif.org/v1/"
     # "institutionCode": "K"
     occurences_dict = {}
@@ -59,7 +60,7 @@ def get_occurence_key(taxon_key_dict, filter):
     return occurences_dict
 
 
-def get_occurrence_image(taxon_key_dict, filter):
+def get_occurrence_image(species_list, filter):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
@@ -68,7 +69,7 @@ def get_occurrence_image(taxon_key_dict, filter):
     """
     base_url = "https://api.gbif.org/v1/"
     has_image_dict = {}
-    occurrences_key = get_occurence_key(taxon_key_dict, filter)
+    occurrences_key = get_occurence_key(species_list, filter)
     for species_name, occurrences in occurrences_key.items(): 
         taxon_key = taxon_key_dict[species_name]     
         for occurrence in range(0,(len(occurrences))):          
@@ -118,9 +119,9 @@ def get_results_table(species_list, filter):
     """
     Return a data frame with the 
     """
-    taxon_key_dict = get_taxon_key(species_list[:3])
-    occurrences_key = get_occurence_key(taxon_key_dict, filter)
-    occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
+    taxon_key_dict = get_taxon_key(species_list)
+    occurrences_key = get_occurence_key(species_list, filter)
+    occurrence_has_image = get_occurrence_image(species_list, filter)
     column_names = ["species_name", "taxon_key", "occurrence_key", "has_image"]
     df = pd.DataFrame(columns = column_names) 
     for species_name, occurrences in occurrences_key.items():      
@@ -162,24 +163,22 @@ if __name__ == "__main__":
     """
     print(filter_information)
 
-    ## Hash the filter information string to use it for naming the results file
-    filter_hash = hashlib.md5(str.encode(filter_information)).hexdigest()
-
-    # Input species 
-    species_list = native_trees_list()
+    # 2- Input species names
+    species_list = native_trees_list()   
     
 
     # Get GBIF keys for the given species
     #taxon_key_dict = get_taxon_key(species_list[:3])
 
 
-    # Apply filter to find species occurrences
-    #occurrences_key = get_occurence_key(taxon_key_dict, filter)
-    #occurrence_key = "2013665032"
-    
-    # Download images for species occurrences
-    #occurrence_has_image = get_occurrence_image(taxon_key_dict, filter)
-    
+    # 3- Get species kesy (same as taxon key) 
+    taxon_key_dict = get_taxon_key(species_list)
+    ## Check if all species entered have a taxon key
+    species_without_speciesKey(species_list,taxon_key_dict)
+
+    # 4- Get images 
+    has_image_dict = get_occurrence_image(species_list, filter)
+
     # 5-  Save results information for the applied filter
     ## Hash the filter information + species list string to use it for naming the results file
     filter_and_species_information = filter_information + str(species_list)
