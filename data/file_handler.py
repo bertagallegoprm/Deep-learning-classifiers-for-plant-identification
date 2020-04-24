@@ -16,7 +16,7 @@ def open_filter_report(filter_hashed):
     md5hash_request_filter.txt
     Example: 2020-03-31T22:00:00_request_summary.txt
     """
-    folder = "request_summary"
+    folder = "request_reports"
     if not os.path.exists(folder):
         os.makedirs(folder)
     text_file_name = f"{folder}/{filter_hashed}_request_filter.txt"
@@ -33,18 +33,13 @@ def request_result_to_csv(df, filter_hash):
     are stored in a new file, while results
     from the same filter are overwriten.
     """
-    folder = "request_summary"
+    folder = "request_reports"
     if not os.path.exists(folder):
         os.makedirs(folder)
-    csv_file_name = f"{folder}/{filter_hash}_request_summary.csv"
+    csv_file_name = f"{folder}/{filter_hash}_request_results.csv"
     df.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8") 
     print(""+csv_file_name+" file created.")
 
-
-if __name__ == "__main__":
-    report = open_report_file()
-    report.write("test")
-    report.close()
 
 
     
