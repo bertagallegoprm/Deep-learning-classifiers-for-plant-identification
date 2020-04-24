@@ -64,7 +64,7 @@ def get_occurence_key(taxon_key_dict, filter, report):
     return occurences_dict
 
 
-def get_occurrence_image(taxon_key_dict, report):
+def get_occurrence_image(taxon_key_dict, filter, report):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
@@ -76,31 +76,41 @@ def get_occurrence_image(taxon_key_dict, report):
     # "institutionCode": "K"
     filter = {"mediaType": "StillImage", "country": "GB", "hasCoordinate": "True", "kingdom": "Plantae", "basisOfRecord": "PRESERVED_SPECIMEN"}
     has_image_dict = {}
-    for species_name, taxon_key in taxon_key_dict.items():
-        filter["taxonKey"]=taxon_key
-        response = requests.get(f"{base_url}occurrence/search", params=filter)
-        if response.status_code == 200:
-            occurrences = response.json()
-            for occurrence_no in range(0, len(occurrences)):
+    occurrences_key = get_occurence_key(taxon_key_dict, filter, report)
+    for species_name, occurrences in occurrences_key.items(): 
+        taxon_key = taxon_key_dict[species_name]     
+        for occurrence in range(0,(len(occurrences))):          
+            occurrence_key = occurrences[occurrence]                
+            filter["gbifID"]=occurrence_key
+            response = requests.get(f"{base_url}occurrence/search", params=filter)
+            if response.status_code == 200:
+                occurrence_result = response.json()
                 try:
-                    occurrence_url = occurrences["results"][occurrence_no]["media"][0]["identifier"]
-                    occurrence_key = occurrences["results"][occurrence_no]["key"]
-                    has_image_dict[occurrence_key]= "1"
-                    folder = "images"
-                    if not os.path.exists(folder):
-                        os.makedirs(folder)
-                    image_path = f"{folder}/{taxon_key}_{occurrence_key}_{occurrence_no}.jpg"
-                    urllib.request.urlretrieve(occurrence_url, image_path) 
-                    stop_if_size(10)
-                except:
+                    occurrence_url = occurrence_result["results"][0]["media"][0]["identifier"]                  
+                    try:
+                        # Create folder where to store images
+                        folder = "images"
+                        if not os.path.exists(folder):
+                            os.makedirs(folder)            
+                        # Name and download file   
+                        image_path = f"{folder}/{taxon_key}_{occurrence_key}_{occurrence}.jpg"
+                        urllib.request.urlretrieve(occurrence_url, image_path) 
+                        has_image_dict[occurrence_key]= "1"
+                        stop_if_size(10)
+                    except:
                     pass
-            print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
-            report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
-            has_image_dict[occurrence_key]= "0"
-        elif response.status_code == 404:
-            print('Error 404: Page not found.')
-        else:
-            print("Error. Undetermined status code.")  
+                        print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
+                        report.write(f"{species_name}: {occurrence_key} not downloaded.\n")
+                        has_image_dict[occurrence_key]= "x"
+                except:
+                        print(f"{species_name}: Occurrence {occurrence_key} does not have a valid url.")
+                        has_image_dict[occurrence_key]= "0"
+                #except:
+                #    print(f"{species_name}: Unable to get occurrence key.")
+            elif response.status_code == 404:
+                print('Error 404: Page not found.')
+            else:
+                print("Error. Undetermined status code.")  
     return has_image_dict                                                   
 
 
