@@ -32,15 +32,7 @@ pip3 install --user pipenv
 pipenv install
 ```
 
-### Run
-
-To run from the terminal, in the file directory:
-
-```
-pipenv run python your-python-file.py 
-```
-
-## Data 
+## Data download
 
 The data is available at the [Global Biodiversity Information Facility (GBIF) website](https://www.gbif.org/). 
 
@@ -48,18 +40,22 @@ It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary)
 
 ### Image download
 
-- Open `data_request.py` and customize search filters with:
+- Open `data_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
 
     - Search name.
     - API search filters.
     - Input species.
 
-- I create a local copy of `data_request.py` (`working_data_request.py`) to iterate through filters without modifying the script in the repository.
 
 - Run from the `data` directory:
 
 ```
 pipenv run python data_request.py 
+```
+Or if using the local copy file:
+
+```
+pipenv run python working_data_request.py 
 ```
 
 - Output:
