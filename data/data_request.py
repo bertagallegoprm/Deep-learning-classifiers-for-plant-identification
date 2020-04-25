@@ -3,6 +3,7 @@ import urllib.request
 import os
 import pandas as pd
 import hashlib
+import pdb
 from species_names import native_trees_list
 from storage_handler import stop_if_size
 from file_handler import request_result_to_csv, open_filter_report
@@ -59,7 +60,7 @@ def get_occurence_key(species_taxon_key, filter):
     return occurences_dict
 
 
-def get_occurrence_image(species_occurrences_keys, filter):
+def get_occurrence_image(species_occurrences_keys, folder):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
@@ -72,15 +73,13 @@ def get_occurrence_image(species_occurrences_keys, filter):
         taxon_key = species_taxon_key[species_name]     
         for occurrence in range(0,(len(occurrences))):          
             occurrence_key = occurrences[occurrence]                
-            filter["gbifID"]=occurrence_key
-            response = requests.get(f"{base_url}occurrence/search", params=filter)
+            response = requests.get(f"{base_url}occurrence/{occurrence_key}")
             if response.status_code == 200:
                 occurrence_result = response.json()
                 try:
-                    occurrence_url = occurrence_result["results"][0]["media"][0]["identifier"]                  
+                    occurrence_url = occurrence_result["media"][0]["identifier"] 
                     try:
                         # Create folder where to store images
-                        folder = "images"
                         if not os.path.exists(folder):
                             os.makedirs(folder)            
                         # Name and download file   
@@ -89,10 +88,10 @@ def get_occurrence_image(species_occurrences_keys, filter):
                         has_image_dict[occurrence_key]= "1"
                         stop_if_size(10)
                     except:
-                        #print(f"{species_name}: Occurrence {occurrence_key} not downloaded.")                
+                        # urlretrieve fails              
                         has_image_dict[occurrence_key]= "0"
                 except:
-                        #print(f"{species_name}: Occurrence {occurrence_key} does not have a valid url.")
+                        # parsing request result fails
                         has_image_dict[occurrence_key]= "0"
             elif response.status_code == 404:
                 print('Error 404: Page not found.')
@@ -162,7 +161,10 @@ if __name__ == "__main__":
     kingdom:{kingdom}
     basisOfRecord: {basis_of_record}
     institutionCode: {institution_code}
-    """      
+    """ 
+    ## Hash the filter information + species list string to use it for naming the results file
+    filter_and_species_information = filter_information + str(species_list)
+    filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()     
 
     # 3- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)
@@ -173,12 +175,10 @@ if __name__ == "__main__":
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
     # 5- Get images from occurrences
-    occurrence_has_image = get_occurrence_image(species_occurrences_keys, filter)
+    folder = filter_hash + "_images"
+    occurrence_has_image = get_occurrence_image(species_occurrences_keys, folder)
 
     # 6-  Save results information for the applied filter
-    ## Hash the filter information + species list string to use it for naming the results file
-    filter_and_species_information = filter_information + str(species_list)
-    filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()
     ## Save results summary to csv file
     result_df = get_results_table(species_occurrences_keys, occurrence_has_image)
     request_result_to_csv(result_df, filter_hash)
