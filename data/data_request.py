@@ -111,7 +111,7 @@ def species_without_speciesKey(species_list,species_taxon_key):
     return diff
 
 
-def get_results_table(species_occurrences_keys, occurrence_has_image, filter):
+def get_results_table(species_occurrences_keys, occurrence_has_image):
     """
     Return a data frame with:
     - Species names.
@@ -136,17 +136,23 @@ def get_results_table(species_occurrences_keys, occurrence_has_image, filter):
 
 if __name__ == "__main__":
 
-    # 1- Handle filter information  
+    # 1- Customize search parameters 
 
-    ###### Edit for a different search ############
+    ###### Edit for a new search ##################
+    # Search name
+    search_name = "Herbarium specimens images from native trees in GB"
+    # Species input
+    species_list = native_trees_list() 
+    # Filter parameters
     media_type = "StillImage"  
     country = "GB"
-    has_coordinate = "False"
-    kingdom = ""
+    has_coordinate = "" # True/False
+    kingdom = ""  # Plantae
     basis_of_record = "PRESERVED_SPECIMEN"
     institution_code = "" # K (RBG Kew)
-    #############################################
+    ###############################################
 
+    # 2- Handle filter parameters
     filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code}
     filter_information = f"""
     Filters:
@@ -155,11 +161,8 @@ if __name__ == "__main__":
     hasCoordinate: {has_coordinate}
     kingdom:{kingdom}
     basisOfRecord: {basis_of_record}
-    """
-    print(filter_information)
-
-    # 2- Input species names
-    species_list = native_trees_list()   
+    institutionCode: {institution_code}
+    """      
 
     # 3- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)
@@ -177,9 +180,13 @@ if __name__ == "__main__":
     filter_and_species_information = filter_information + str(species_list)
     filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()
     ## Save results summary to csv file
-    result_df = get_results_table(species_occurrences_keys, occurrence_has_image, filter)
+    result_df = get_results_table(species_occurrences_keys, occurrence_has_image)
     request_result_to_csv(result_df, filter_hash)
-    ## Save filter information to text file
+    ## Save filter and species information to text file
     save_filter = open_filter_report(filter_hash)
-    save_filter.write(f"{str(filter_information)}\n")
+    save_filter.write(f"{search_name}\n")
+    save_filter.write(f"{str(filter_information)}\n\n")
+    save_filter.write("Input species list:\n")
+    for species in species_list:
+        save_filter.write(f"{species}\n")
     save_filter.close()
