@@ -59,7 +59,7 @@ def get_occurence_key(species_taxon_key, filter):
     return occurences_dict
 
 
-def get_occurrence_image(species_occurrences_keys, filter):
+def get_occurrence_image(species_occurrences_keys):
     """
     Download image for the occurrences of the given species.
     Image naming format: 
@@ -72,12 +72,11 @@ def get_occurrence_image(species_occurrences_keys, filter):
         taxon_key = species_taxon_key[species_name]     
         for occurrence in range(0,(len(occurrences))):          
             occurrence_key = occurrences[occurrence]                
-            filter["gbifID"]=occurrence_key
-            response = requests.get(f"{base_url}occurrence/search", params=filter)
+            response = requests.get(f"{base_url}occurrence/{occurrence_key}")
             if response.status_code == 200:
                 occurrence_result = response.json()
                 try:
-                    occurrence_url = occurrence_result["results"][0]["media"][0]["identifier"]                  
+                    occurrence_url = occurrence_result["media"][0]["identifier"] 
                     try:
                         # Create folder where to store images
                         folder = "images"
