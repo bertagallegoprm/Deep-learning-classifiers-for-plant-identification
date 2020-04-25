@@ -1,8 +1,0 @@
-
-    Filters:
-    mediaType: StillImage
-    country: GB
-    hasCoordinate: False
-    kingdom:
-    basisOfRecord: PRESERVED_SPECIMEN
-    
