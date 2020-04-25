@@ -1,0 +1,58 @@
+Herbarium specimens images from native trees in GB
+
+    Filters:
+    mediaType: StillImage
+    country: GB
+    hasCoordinate: 
+    kingdom:
+    basisOfRecord: PRESERVED_SPECIMEN
+    institutionCode: 
+    
+
+Input species list:
+Alnus glutinosa
+Frangula alnus
+Fraxinus excelsior
+Populus tremula
+Fagus sylvatica
+Betula pubescens
+Betula pendula
+Prunus spinosa
+Buxus sempervirens
+Rhamnus cathartica
+Prunus padus
+Prunus avium
+Malus sylvestris
+Cornus sanguinea
+Sambucus nigra
+Ulmus procera
+Ulmus glabra
+Viburnum opulus
+Crataegus monogyna
+Crataegus laevigata
+Corylus avellana
+Ilex aquifolium
+Carpinus betulus
+Juniperus communis
+Tilia x europaea
+Tilia platyphyllos
+Tilia cordata
+Acer campestre
+Quercus robur
+Quercus petraea
+Pyrus cordata
+Pinus sylvestris
+Populus nigra
+Sorbus aucuparia
+Euonymus europaea
+Sorbus aria
+Sorbus arranensis
+Sorbus rupicola
+Sorbus torminalis
+Salix pentandra
+Salix fragilis
+Salix caprea
+Salix cinerea subsp. oleifolia
+Salix viminalis
+Salix alba
+Taxus baccata

@@ -1,5 +1,4 @@
-*.csv
-*.log
 __pychache__
 .vscode
 data/images/*.jpg
+working_data_request.py

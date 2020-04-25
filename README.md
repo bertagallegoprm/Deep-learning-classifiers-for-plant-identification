@@ -46,8 +46,27 @@ The data is available at the [Global Biodiversity Information Facility (GBIF) we
 
 It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary). Here I use the Python [`requests` library](https://requests.readthedocs.io/en/master/).
 
-- To run the code and get the data:
+### Image download
+
+- Open `data_request.py` and customize search filters with:
+
+    - Search name.
+    - API search filters.
+    - Input species.
+
+- I create a local copy of `data_request.py` (`working_data_request.py`) to iterate through filters without modifying the script in the repository.
+
+- Run from the `data` directory:
 
 ```
-pipenv run python data-request.py 
+pipenv run python data_request.py 
 ```
+
+- Output:
+
+    - Images from each species occurrence are downloaded in the `data/image` folder with the following nomenclature: `taxonKey_occurrenceKey.jpg`.
+
+    - Two files are created in `data/request_reports` folder: 
+
+        - a CSV file with the taxon key and occurrence key associated to each occurrece and a flag to know if the image has been downloaded successfully. 
+        - a text file with the filter applied to the search (input list of species and request parameters). 
