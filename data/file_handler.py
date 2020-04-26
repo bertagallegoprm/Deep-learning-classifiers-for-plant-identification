@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import pandas as pd
 
 
 def get_timestamp():
@@ -41,7 +42,23 @@ def request_result_to_csv(df, filter_hash):
     print(""+csv_file_name+" file created.")
 
 
+def read_csv_name():
+    """
+    Prompt user for file path and name.
+    """
+    return input("Enter file name (full path): ") 
 
+
+def create_dataframe_from_csv(path_to_csv):
+    """
+    Given a full path, open a CSV file
+    and store it into a data frame object.
+    """
+    try:
+        df = pd.read_csv(""+path_to_csv+"", sep=",", encoding="utf-8") # Change to utf-8 if CSV has this encoding
+    except:
+        raise
+    return df
     
 
 
