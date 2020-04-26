@@ -66,3 +66,12 @@ pipenv run python working_data_request.py
 
         - a CSV file with the taxon key and occurrence key associated to each occurrece and a flag to know if the image has been downloaded successfully. 
         - a text file with the filter applied to the search (input list of species and request parameters). 
+
+- Get summary of results:
+
+```
+pipenv run python request_stats.py 
+```
+   Output: a CVS file in the `data/request_reports` folder with the number of occurrences and images downloaded per species. 
+   
+   To print in the terminal a count of the totals in the summary table run: `pipenv run python print_summary_totals.py`
