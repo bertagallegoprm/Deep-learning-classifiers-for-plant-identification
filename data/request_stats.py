@@ -31,8 +31,8 @@ if __name__ == "__main__":
 
     save_summary_as_csv(read_csv_name())
 
-    summary = get_summary_of_results(request_results)
     # Total number of different species
+    summary = get_summary_of_results(path_to_file)
     total_species = int(summary.shape[0])
     print(f"Total number of species: {total_species}")
     # Total number of occurrences
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     print(f"Total number of occurrences: {total_occurrences}")
     # Total number of images
     total_images = int(summary[["image_count"]].sum())
-    print(f"Total number of images: {total_occurrences}")
+    print(f"Total number of images: {total_images}")
