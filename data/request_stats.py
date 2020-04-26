@@ -23,6 +23,8 @@ if __name__ == "__main__":
     #print(summary)
 
     # Total number of different species
+    total_species = int(summary.shape[0])
+    print(f"Total number of species: {total_species}")
     # Total number of occurrences
     total_occurrences = int(summary[["occurrence_count"]].sum())
     print(f"Total number of occurrences: {total_occurrences}")
