@@ -18,6 +18,9 @@ if __name__ == "__main__":
     images_per_taxon = request_results[request_results.has_image == 1].groupby("species_name")["taxon_key"].value_counts().reset_index(name="image_count")
     images_per_taxon = images_per_taxon.iloc[:,-1]
 
+    # Join counts
+    summary = occurrences_per_taxon.join(images_per_taxon)
+    #print(summary)
 
     # Total number of different species
     # Total number of occurrences
