@@ -24,4 +24,8 @@ if __name__ == "__main__":
 
     # Total number of different species
     # Total number of occurrences
+    total_occurrences = int(summary[["occurrence_count"]].sum())
+    print(f"Total number of occurrences: {total_occurrences}")
     # Total number of images
+    total_images = int(summary[["image_count"]].sum())
+    print(f"Total number of images: {total_occurrences}")
