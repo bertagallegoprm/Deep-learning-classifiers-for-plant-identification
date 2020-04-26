@@ -9,6 +9,8 @@ if __name__ == "__main__":
 
     # Table with Species name : Occurrences/species : Images/species
     ## List of species
+    unique_taxon = request_results[["species_name", "taxon_key"]].drop_duplicates(["species_name", "taxon_key"])
+    print(unique_taxon)
     ## Number of occurences by species
     ## Number of images per species
 
