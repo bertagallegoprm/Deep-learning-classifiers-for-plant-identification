@@ -73,7 +73,6 @@ def get_occurrence_data(species_occurrences_keys):
                 data_in_row.extend([species_name,taxon_key, occurrences[occurrence], basis_of_record,institution_code, coordinate_system, decimal_longitude, decimal_latitude, coordinate_uncertainty, elevation, date, issues])         
                 new_row = pd.DataFrame([data_in_row], columns=column_names)
                 df = df.append(new_row, ignore_index = True)
-                print("ok 2")
             elif response.status_code == 404:
                 print('Error 404: Page not found.')
             else:
@@ -90,7 +89,6 @@ if __name__ == "__main__":
     search_name = "Occurrence data from native trees in GB"
     # Species input
     species_list = native_trees_list() 
-    species_list = species_list[:3]
     # Filter parameters
     media_type = ""  #StillImage
     country = "GB"
@@ -121,5 +119,20 @@ if __name__ == "__main__":
     # 4- Get occurrences keys 
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
+    # 5- Get occurrence data into a CSV file
     occurrence_data_table = get_occurrence_data(species_occurrences_keys)
-    print(occurrence_data_table)
+    csv_file_name = "request_reports/"+filter_hash+"_occurrence_data" 
+    occurrence_data_table.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
+
+    # 6- Save filter and species information to text file
+    folder = "request_reports"
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    text_file_name = f"{folder}/{filter_hash}_occurrence_filter.txt"
+    save_filter = open(text_file_name, "w")
+    save_filter.write(f"{search_name}\n")
+    save_filter.write(f"{str(filter_information)}\n\n")
+    save_filter.write("Input species list:\n")
+    for species in species_list:
+        save_filter.write(f"{species}\n")
+    save_filter.close()
