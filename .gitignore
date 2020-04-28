@@ -1,4 +1,5 @@
 __pychache__
 .vscode
 data/*_images/*.jpg
+!data/sample_images/*.jpg
 working_data_request.py
