@@ -50,12 +50,12 @@ It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary)
 - Run from the `data` directory:
 
 ```
-pipenv run python data_request.py 
+pipenv run python image_request.py 
 ```
 Or if using the local copy file:
 
 ```
-pipenv run python working_data_request.py 
+pipenv run python working_image_request.py 
 ```
 
 - Output:
