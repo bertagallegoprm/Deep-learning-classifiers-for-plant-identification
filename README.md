@@ -38,9 +38,11 @@ The data is available at the [Global Biodiversity Information Facility (GBIF) we
 
 It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary). Here I use the Python [`requests` library](https://requests.readthedocs.io/en/master/).
 
+The images and the rest of the data are downloaded separately. 
+
 ### Image download
 
-- Open `data_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
+- Open `image_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
 
     - Search name.
     - API search filters.
@@ -50,12 +52,12 @@ It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary)
 - Run from the `data` directory:
 
 ```
-pipenv run python data_request.py 
+pipenv run python image_request.py 
 ```
 Or if using the local copy file:
 
 ```
-pipenv run python working_data_request.py 
+pipenv run python working_image_request.py 
 ```
 
 - Output:
@@ -75,3 +77,25 @@ pipenv run python request_stats.py
    Output: a CVS file in the `data/request_reports` folder with the number of occurrences and images downloaded per species. 
    
    To print in the terminal a count of the totals in the summary table run: `pipenv run python print_summary_totals.py`
+
+### Occurrence data download
+
+- Open `occurrence_data_request.py` and customize search filters. I create a local copy of the file: `working_occurrence_data_request.py` to iterate through filters without modifying the script in the repository.:
+
+    - Search name.
+    - API search filters.
+    - Input species.
+
+
+- Run from the `data` directory:
+
+```
+pipenv run python occurrence_data_request.py 
+```
+
+- Output:
+
+    - Two files are created in `data/request_reports` folder: 
+
+        - a CSV file with the taxon key, occurrence key and the data associated (of interest for the classification: geographical and date). 
+        - a text file with the filter applied to the search (input list of species and request parameters). 
