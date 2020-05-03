@@ -125,7 +125,7 @@ if __name__ == "__main__":
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
     # 5- Get images from occurrences
-    folder = "data/images/image_request/"filter_hash + "_images"
+    folder = "data/images/image_request/"+filter_hash + "_images"
     occurrence_has_image = get_occurrence_image(species_occurrences_keys, folder)
 
     # 6-  Save results information for the applied filter
