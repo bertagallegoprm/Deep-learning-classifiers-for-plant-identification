@@ -17,7 +17,7 @@ def open_filter_report(filter_hashed):
     md5hash_request_filter.txt
     Example: 2020-03-31T22:00:00_request_summary.txt
     """
-    folder = "request_reports"
+    folder = "data/images/image_request/request_reports"
     if not os.path.exists(folder):
         os.makedirs(folder)
     text_file_name = f"{folder}/{filter_hashed}_request_filter.txt"
@@ -25,7 +25,7 @@ def open_filter_report(filter_hashed):
     return open(text_file_name, "w")
 
 
-def request_result_to_csv(df, filter_hash):
+def image_result_to_csv(df, filter_hash):
     """
     Create a CSV file with the results
     of the data request to GBIF
@@ -34,7 +34,7 @@ def request_result_to_csv(df, filter_hash):
     are stored in a new file, while results
     from the same filter are overwriten.
     """
-    folder = "request_reports"
+    folder = "data/images/image_request/request_reports"
     if not os.path.exists(folder):
         os.makedirs(folder)
     csv_file_name = f"{folder}/{filter_hash}_request_results.csv"
