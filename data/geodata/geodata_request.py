@@ -4,8 +4,8 @@ import os
 import pandas as pd
 import hashlib
 import pdb
-from species_names import native_trees_list
-from image_request import get_taxon_key, get_occurence_key
+from data.species_names import native_trees_list
+from data.common_api_request import get_taxon_key, get_occurence_key
 
 
 def get_occurrence_data(species_occurrences_keys):
