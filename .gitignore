@@ -1,5 +1,5 @@
-__pychache__
+__pycache__
 .vscode
-data/*_images/*.jpg
-!data/sample_images/*.jpg
+*.jpg
+!data/images/sample_images/*.jpg
 working_data_request.py

@@ -1,5 +1,5 @@
 import pandas as pd
-from file_handler import read_csv_name, create_dataframe_from_csv
+from data.file_handler import read_csv_name, create_dataframe_from_csv
 
 def get_summary_of_results(path_to_file):
     """

@@ -42,29 +42,25 @@ The images and the rest of the data are downloaded separately.
 
 ### Image download
 
-- Open `image_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
+- Open `data/images/image_request/image_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
 
     - Search name.
     - API search filters.
     - Input species.
 
 
-- Run from the `data` directory:
+- Run from the main directory (tfm):
 
 ```
-pipenv run python image_request.py 
+python3 -m data.images.image_request.image_request 
 ```
-Or if using the local copy file:
 
-```
-pipenv run python working_image_request.py 
-```
 
 - Output:
 
-    - Images from each species occurrence are downloaded in the `data/image` folder with the following nomenclature: `taxonKey_occurrenceKey.jpg`.
+    - Images from each species occurrence are downloaded in the `data/images/image_request/images` folder with the following nomenclature: `taxonKey_occurrenceKey.jpg`.
 
-    - Two files are created in `data/request_reports` folder: 
+    - Two files are created in `data/images/image_request/request_reports` folder: 
 
         - a CSV file with the taxon key and occurrence key associated to each occurrece and a flag to know if the image has been downloaded successfully. 
         - a text file with the filter applied to the search (input list of species and request parameters). 
@@ -72,30 +68,31 @@ pipenv run python working_image_request.py
 - Get summary of results:
 
 ```
-pipenv run python request_stats.py 
+python3 -m data.images.image_request.image_request_summary
+
 ```
-   Output: a CVS file in the `data/request_reports` folder with the number of occurrences and images downloaded per species. 
+   Output: a CVS file in the `data/images/image_request/image_request/request_results` folder with the number of occurrences and images downloaded per species. 
    
-   To print in the terminal a count of the totals in the summary table run: `pipenv run python print_summary_totals.py`
+   To print in the terminal a count of the totals in the summary table run: `python3 -m data.images.image_request.image_request_summary_totals`
 
 ### Occurrence data download
 
-- Open `occurrence_data_request.py` and customize search filters. I create a local copy of the file: `working_occurrence_data_request.py` to iterate through filters without modifying the script in the repository.:
+- Open `geodata/geodata_request.py` and customize search filters. I create a local copy of the file: `working_geodata_request.py` to iterate through filters without modifying the script in the repository.:
 
     - Search name.
     - API search filters.
     - Input species.
 
 
-- Run from the `data` directory:
+- Run from the main directory (tfm):
 
 ```
-pipenv run python occurrence_data_request.py 
+python3 -m data.geodata.geodata_request 
 ```
 
 - Output:
 
-    - Two files are created in `data/request_reports` folder: 
+    - Two files are created in `data/geodata/request_reports` folder: 
 
         - a CSV file with the taxon key, occurrence key and the data associated (of interest for the classification: geographical and date). 
         - a text file with the filter applied to the search (input list of species and request parameters). 
