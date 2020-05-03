@@ -1,9 +1,9 @@
 import pandas as pd
-from data.file_handler import read_csv_name, create_dataframe_from_csv
+from data.file_handler import create_dataframe_from_csv
 
 
 if __name__ == "__main__":
-    path_to_file = read_csv_name() # path summary file
+    path_to_file = input("Enter file name (summary.csv, full path): ") 
     summary = create_dataframe_from_csv(path_to_file)
     total_species = int(summary.shape[0])
     print(f"Total number of species: {total_species}")

@@ -6,7 +6,7 @@ import hashlib
 import pdb
 from data.species_names import native_trees_list
 from data.storage_handler import stop_if_size
-from data.file_handler import request_result_to_csv, open_filter_report
+from data.file_handler import image_result_to_csv, open_filter_report
 from data.common_api_request import get_taxon_key, get_occurence_key
 
 
@@ -125,13 +125,13 @@ if __name__ == "__main__":
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
     # 5- Get images from occurrences
-    folder = filter_hash + "_images"
+    folder = "data/images/image_request/"+filter_hash + "_images"
     occurrence_has_image = get_occurrence_image(species_occurrences_keys, folder)
 
     # 6-  Save results information for the applied filter
     ## Save results summary to csv file
     result_df = get_results_table(species_occurrences_keys, occurrence_has_image)
-    request_result_to_csv(result_df, filter_hash)
+    image_result_to_csv(result_df, filter_hash)
     ## Save filter and species information to text file
     save_filter = open_filter_report(filter_hash)
     save_filter.write(f"{search_name}\n")

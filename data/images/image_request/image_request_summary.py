@@ -1,5 +1,5 @@
 import pandas as pd
-from data.file_handler import read_csv_name, create_dataframe_from_csv
+from data.file_handler import create_dataframe_from_csv
 
 def get_summary_of_results(path_to_file):
     """
@@ -23,12 +23,12 @@ def save_summary_as_csv(path_to_file):
     summary = get_summary_of_results(path_to_file)
     file_name = path_to_file.split("/")[-1]
     filter_hash = file_name.split("_")[0]
-    summary_file_name = "request_reports/" + filter_hash + "_summary.csv"
+    summary_file_name = "data/image/image_request/request_reports/" + filter_hash + "_summary.csv"
     summary.to_csv(summary_file_name)
     print(f"File {summary_file_name} created.")
 
 if __name__ == "__main__":
 
-    path_to_file = read_csv_name()
+    path_to_file = input("Enter file name (request_results.csv, full path): ") 
     save_summary_as_csv(path_to_file)
 
