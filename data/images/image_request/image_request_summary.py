@@ -1,5 +1,5 @@
 import pandas as pd
-from data.file_handler import read_csv_name, create_dataframe_from_csv
+from data.file_handler import create_dataframe_from_csv
 
 def get_summary_of_results(path_to_file):
     """
@@ -29,6 +29,6 @@ def save_summary_as_csv(path_to_file):
 
 if __name__ == "__main__":
 
-    path_to_file = read_csv_name()
+    path_to_file = input("Enter file name (request_results.csv, full path): ") 
     save_summary_as_csv(path_to_file)
 
