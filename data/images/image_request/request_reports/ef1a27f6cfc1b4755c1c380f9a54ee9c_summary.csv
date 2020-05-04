@@ -11,8 +11,8 @@
 9,Crataegus monogyna,9220780,20,19
 10,Euonymus europaea,3169131,20,20
 11,Fagus sylvatica,2882316,20,19
-12,Frangula alnus,3039454,20,20
-13,Fraxinus excelsior,3172358,20,18
+12,Frangula alnus,3039454,20,19
+13,Fraxinus excelsior,3172358,20,15
 14,Ilex aquifolium,5414222,20,20
 15,Juniperus communis,2684709,20,12
 16,Malus sylvestris,3001509,12,3
@@ -26,7 +26,7 @@
 24,Quercus robur,2878688,20,20
 25,Rhamnus cathartica,3039491,20,20
 26,Salix caprea,5372952,17,17
-27,Salix cinerea subsp. oleifolia,5582546,15,15
+27,Salix cinerea subsp. oleifolia,5582546,15,14
 28,Salix fragilis,5372829,17,17
 29,Salix pentandra,5372647,12,12
 30,Salix viminalis,5372933,9,9
@@ -35,8 +35,8 @@
 33,Sorbus rupicola,9415196,9,9
 34,Sorbus torminalis,9410160,10,10
 35,Taxus baccata,5284517,20,11
-36,Tilia cordata,3152047,10,9
-37,Tilia platyphyllos,3152048,9,9
+36,Tilia cordata,3152047,10,8
+37,Tilia platyphyllos,3152048,9,8
 38,Tilia x europaea,3152046,5,5
 39,Ulmus glabra,5361866,20,19
 40,Ulmus procera,5361862,20,19
