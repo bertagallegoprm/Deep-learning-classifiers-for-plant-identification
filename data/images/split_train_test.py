@@ -2,11 +2,17 @@ import os
 import random
 
 if __name__ == "__main__":
+    # Parameters ##############################
+    # Image directories
     raw_image_dir = "data/images/raw_images/"
     train_dir = raw_image_dir + "train"
     test_dir = raw_image_dir + "test"
+    # Train and test sizes
     train_size = 80
     test_size = 20
+    # Seed for the random image sampling
+    seed = 1234
+    ###########################################
     # Create train and test folders
     if not os.path.exists(train_dir):
         os.system(f"mkdir {train_dir}")
@@ -22,11 +28,11 @@ if __name__ == "__main__":
             if (species_folder != "train") and (species_folder != "test"):
                 # List all files in each species folder
                 species_files = os.listdir((os.path.join(raw_image_dir, species_folder)))
-                print(len(species_files))
                 # Get train and test sizes per species folder
                 n_train = round(len(species_files)*(train_size/100))
                 n_test = round(len(species_files)*(test_size/100))
                 # Select train and test files and move to folders
+                random.seed(seed)
                 train_files = random.sample(species_files, n_train)
                 test_files = list(set(species_files) - set(train_files))
                 for file in train_files:
