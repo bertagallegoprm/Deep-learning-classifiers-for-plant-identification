@@ -14,3 +14,12 @@ class SplitImageDataset:
     test_size = 20
     # Seed for the random image sampling
     seed = 1234
+
+
+class TensorRescale:
+    """
+    """
+    batch_size = 128
+    epochs = 15
+    IMG_HEIGHT = 150
+    IMG_WIDTH = 150
