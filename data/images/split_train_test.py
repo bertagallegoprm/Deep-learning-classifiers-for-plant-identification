@@ -1,18 +1,17 @@
 import os
 import random
+from data.config import SplitImageDataset as sid
+
 
 if __name__ == "__main__":
-    # Parameters ##############################
-    # Image directories
-    raw_image_dir = "data/images/raw_images/"
-    train_dir = raw_image_dir + "train"
-    test_dir = raw_image_dir + "test"
-    # Train and test sizes
-    train_size = 80
-    test_size = 20
-    # Seed for the random image sampling
-    seed = 1234
-    ###########################################
+    # Parameters configured in SplitImageDataset 
+    raw_image_dir = sid.raw_image_dir
+    train_dir = sid.train_dir
+    test_dir = sid.test_dir
+    train_size = sid.train_size
+    test_size = sid.test_size
+    seed = sid.seed
+    ############################################
     # Create train and test folders
     if not os.path.exists(train_dir):
         os.system(f"mkdir {train_dir}")
