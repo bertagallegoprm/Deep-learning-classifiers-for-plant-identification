@@ -96,3 +96,15 @@ python3 -m data.geodata.geodata_request
 
         - a CSV file with the taxon key, occurrence key and the data associated (of interest for the classification: geographical and date). 
         - a text file with the filter applied to the search (input list of species and request parameters). 
+
+
+## Image pre-processing
+
+### Structure images directory
+
+After downloading the data, copy the selected images dataset into a new folder: `data/images/raw_images`.
+
+- Split the images into train and test dataset (80:20 proportion):
+```
+python3 -m data.images.split_train_test
+```
