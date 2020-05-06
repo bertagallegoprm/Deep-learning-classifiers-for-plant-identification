@@ -18,10 +18,20 @@ class SplitImageDataset:
     seed = 1234
 
 
-class TensorRescale:
+class ImageGenerator:
     """
+    color_mode - "rgb" for 3 color channel, "grayscale" for black and white.
+    class_mode - "binary" for 2 classes, "categoriacal" for more than 2, "input" for autoencoder.
+    batch sixe - No. of images to be yielded from the generator per batch.
+    epoch - 
+    shuffle - True to shuffle the order of images being yielded. False otherwise.
+    seed - seed for the random image augmentation
     """
-    batch_size = 128
-    epochs = 15
-    IMG_HEIGHT = 150
-    IMG_WIDTH = 150
+    color_mode= "rgb"   
+    img_height = 150
+    img_width = 150   
+    class_mode="categorical" 
+    batch_size = 128 
+    epochs = 15                                     
+    shuffle=True                                                               
+    seed = 1234 
