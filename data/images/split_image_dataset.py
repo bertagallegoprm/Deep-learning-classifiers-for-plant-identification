@@ -53,7 +53,9 @@ if __name__ == "__main__":
                         os.system(f"mkdir {val_dir}/{species_folder}")
                     os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(val_dir, species_folder, file))
                 for file in test_files:
-                    os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(test_dir, file))      
+                    if not os.path.exists(f"{test_dir}/test"):
+                        os.system(f"mkdir {test_dir}/test")
+                    os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(test_dir, "test", file))      
                 # Remove empty folders
                 os.rmdir(os.path.join(raw_image_dir, species_folder))
                 print(f"{species_folder} files splitted.")
