@@ -13,7 +13,7 @@ class SplitImageDataset:
     # Train and test sizes
     train_size = 60
     test_size = 20
-    test_size = 20
+    val_size = 20
     # Seed for the random image sampling
     seed = 1234
 
