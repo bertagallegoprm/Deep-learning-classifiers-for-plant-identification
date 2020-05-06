@@ -9,8 +9,10 @@ class SplitImageDataset:
     raw_image_dir = "data/images/raw_images/"
     train_dir = raw_image_dir + "train"
     test_dir = raw_image_dir + "test"
+    val_dir = raw_image_dir + "val"
     # Train and test sizes
-    train_size = 80
+    train_size = 60
+    test_size = 20
     test_size = 20
     # Seed for the random image sampling
     seed = 1234

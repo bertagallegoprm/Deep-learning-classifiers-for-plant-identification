@@ -34,7 +34,9 @@ def get_occurrence_image(species_occurrences_keys, folder):
                         if not os.path.exists(current_folder):
                             os.makedirs(current_folder)            
                         # Name and download file   
-                        image_path = f"{current_folder}/{taxon_key}_{occurrence_key}.jpg"
+                        species_words = species_name.split(" ")
+                        species_class = '_'.join(species_words)
+                        image_path = f"{current_folder}/{species_class}_{occurrence_key}.jpg"
                         urllib.request.urlretrieve(occurrence_url, image_path) 
                         has_image_dict[occurrence_key]= "1"
                         stop_if_size(10)
