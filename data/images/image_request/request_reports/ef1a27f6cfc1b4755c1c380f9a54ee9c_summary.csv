@@ -1,9 +1,9 @@
 ,species_name,taxon_key,occurrence_count,image_count
-0,Acer campestre,3189863,19,19
+0,Acer campestre,3189863,20,20
 1,Alnus glutinosa,2876213,20,19
 2,Betula pendula,5331916,20,19
 3,Betula pubescens,9118014,20,20
-4,Buxus sempervirens,2984671,17,17
+4,Buxus sempervirens,2984671,18,18
 5,Carpinus betulus,2875818,20,20
 6,Cornus sanguinea,3082234,17,17
 7,Corylus avellana,2875979,20,19
@@ -11,33 +11,33 @@
 9,Crataegus monogyna,9220780,20,19
 10,Euonymus europaea,3169131,20,20
 11,Fagus sylvatica,2882316,20,19
-12,Frangula alnus,3039454,19,19
+12,Frangula alnus,3039454,20,20
 13,Fraxinus excelsior,3172358,20,18
 14,Ilex aquifolium,5414222,20,20
-15,Juniperus communis,2684709,20,11
+15,Juniperus communis,2684709,20,12
 16,Malus sylvestris,3001509,12,3
 17,Pinus sylvestris,5285637,20,20
 18,Populus nigra,3040227,20,20
-19,Populus tremula,3040249,4,4
+19,Populus tremula,3040249,6,6
 20,Prunus avium,3020791,17,17
 21,Prunus padus,3021037,4,4
 22,Prunus spinosa,3023221,11,9
-23,Quercus petraea,2880130,7,6
+23,Quercus petraea,2880130,8,7
 24,Quercus robur,2878688,20,20
-25,Rhamnus cathartica,3039491,19,19
-26,Salix caprea,5372952,15,15
-27,Salix cinerea subsp. oleifolia,5582546,12,12
-28,Salix fragilis,5372829,14,14
+25,Rhamnus cathartica,3039491,20,20
+26,Salix caprea,5372952,17,17
+27,Salix cinerea subsp. oleifolia,5582546,15,15
+28,Salix fragilis,5372829,17,17
 29,Salix pentandra,5372647,12,12
 30,Salix viminalis,5372933,9,9
 31,Sambucus nigra,2888728,20,20
 32,Sorbus aucuparia,3012167,20,19
 33,Sorbus rupicola,9415196,9,9
 34,Sorbus torminalis,9410160,10,10
-35,Taxus baccata,5284517,20,10
+35,Taxus baccata,5284517,20,11
 36,Tilia cordata,3152047,10,9
 37,Tilia platyphyllos,3152048,9,9
 38,Tilia x europaea,3152046,5,5
 39,Ulmus glabra,5361866,20,19
 40,Ulmus procera,5361862,20,19
-41,Viburnum opulus,2888605,12,12
+41,Viburnum opulus,2888605,15,15
