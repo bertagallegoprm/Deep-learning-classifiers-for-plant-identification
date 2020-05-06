@@ -2,6 +2,17 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
 from data.config import SplitImageDataset as sid
 from data.config import ImageGenerator as ig
+import matplotlib.pyplot as plt
+
+
+def plotImages(images_arr):
+    fig, axes = plt.subplots(1, 5, figsize=(20,20))
+    axes = axes.flatten()
+    for img, ax in zip( images_arr, axes):
+        ax.imshow(img)
+        ax.axis('off')
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -58,5 +69,15 @@ if __name__ == "__main__":
                                                             class_mode = None,
                                                             seed=seed
                                                             )  
-
+    # Visualize training images
+    ## The next function returns a batch from the dataset. 
+    ## The return value of next function is in form of (x_train, y_train) where x_train is training features and y_train, its labels. 
+    ## Discard the labels to only visualize the training images.
+    # delete corrupt image:
+    try:
+        os.remove(os.path.join(train_dir, "Viburnum_opulus","Viburnum_opulus_1897827000.jpg"))
+    except:
+        pass
+    sample_training_images, _ = next(train_data_gen)
+    plotImages(sample_training_images[:5])
 

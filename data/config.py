@@ -28,7 +28,7 @@ class ImageGenerator:
     seed - seed for the random image augmentation
     """
     color_mode= "rgb"   
-    img_height = 150
+    img_height = 150 # if 50: pixels too big; if 250: too much noise
     img_width = 150   
     class_mode="categorical" 
     batch_size = 128 
