@@ -30,7 +30,7 @@ if __name__ == "__main__":
         species_words = folder.split(" ")
         species_folder = '_'.join(species_words)
         os.rename(os.path.join(raw_image_dir, folder), os.path.join(raw_image_dir, species_folder))
-        if os.path.exists(os.path.join(raw_image_dir, folder)):
+        if os.path.exists(os.path.join(raw_image_dir, species_folder)):
             if (species_folder != "train") and (species_folder != "val") and (species_folder != "test"):
                 # List all files in each species folder
                 species_files = os.listdir((os.path.join(raw_image_dir, species_folder)))
