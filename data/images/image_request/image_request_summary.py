@@ -23,7 +23,7 @@ def save_summary_as_csv(path_to_file):
     summary = get_summary_of_results(path_to_file)
     file_name = path_to_file.split("/")[-1]
     filter_hash = file_name.split("_")[0]
-    summary_file_name = "data/image/image_request/request_reports/" + filter_hash + "_summary.csv"
+    summary_file_name = "data/images/image_request/request_reports/" + filter_hash + "_summary.csv"
     summary.to_csv(summary_file_name)
     print(f"File {summary_file_name} created.")
 
