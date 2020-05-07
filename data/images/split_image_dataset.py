@@ -1,19 +1,21 @@
 import os
 import random
+from data.config import SplitImageDataset as sid
+
 
 if __name__ == "__main__":
-    # Parameters ##############################
+    # Parameters in SplitImageDataset
     # Image directories
-    raw_image_dir = "data/images/raw_images/"
-    train_dir = raw_image_dir + "train"
-    val_dir = raw_image_dir + "val"
-    test_dir = raw_image_dir + "test"
+    raw_image_dir = sid.raw_image_dir
+    train_dir = sid.train_dir
+    val_dir = sid.val_dir
+    test_dir = sid.test_dir
     # Train and test sizes
-    train_size = 60
-    val_size = 20
-    test_size = 20
+    train_size = sid.train_size
+    val_size = sid.val_size
+    test_size = sid.test_size
     # Seed for the random image sampling
-    seed = 1234
+    seed = sid.seed
     ###########################################
     # Create train, validation and test folders
     if not os.path.exists(train_dir):
@@ -28,7 +30,7 @@ if __name__ == "__main__":
         species_words = folder.split(" ")
         species_folder = '_'.join(species_words)
         os.rename(os.path.join(raw_image_dir, folder), os.path.join(raw_image_dir, species_folder))
-        if os.path.exists(os.path.join(raw_image_dir, folder)):
+        if os.path.exists(os.path.join(raw_image_dir, species_folder)):
             if (species_folder != "train") and (species_folder != "val") and (species_folder != "test"):
                 # List all files in each species folder
                 species_files = os.listdir((os.path.join(raw_image_dir, species_folder)))
@@ -51,7 +53,9 @@ if __name__ == "__main__":
                         os.system(f"mkdir {val_dir}/{species_folder}")
                     os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(val_dir, species_folder, file))
                 for file in test_files:
-                    os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(test_dir, file))      
+                    if not os.path.exists(f"{test_dir}/test"):
+                        os.system(f"mkdir {test_dir}/test")
+                    os.rename(os.path.join(raw_image_dir, species_folder, file), os.path.join(test_dir, "test", file))      
                 # Remove empty folders
                 os.rmdir(os.path.join(raw_image_dir, species_folder))
                 print(f"{species_folder} files splitted.")
