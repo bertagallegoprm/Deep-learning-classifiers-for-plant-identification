@@ -2,7 +2,7 @@
 
 ## Getting started
 
-### Set up the working directory (linux)
+### Set up the working directory (Ubuntu)
 
 I am using `pipenv` to create a virtual environment and manage the dependencies.
 
@@ -104,7 +104,7 @@ python3 -m data.geodata.geodata_request
 
 After downloading the data, copy the selected images dataset into a new folder: `data/images/raw_images`.
 
-- Split the images into train and test dataset (80:20 proportion):
+- Split the images into train, validation and test dataset (60:20:20):
 ```
-python3 -m data.images.split_train_test
+python3 -m data.images.split_image_dataset
 ```
