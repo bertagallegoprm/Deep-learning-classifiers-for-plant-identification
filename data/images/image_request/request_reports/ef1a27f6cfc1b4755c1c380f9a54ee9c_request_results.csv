@@ -33,21 +33,21 @@ Frangula alnus,3039454,2514262948,1
 Frangula alnus,3039454,2516336823,1
 Frangula alnus,3039454,2516155335,1
 Frangula alnus,3039454,2243313054,1
-Frangula alnus,3039454,1055542455,0
+Frangula alnus,3039454,1055542455,1
 Frangula alnus,3039454,1056178198,1
 Frangula alnus,3039454,1936326068,1
 Frangula alnus,3039454,2397730606,1
 Frangula alnus,3039454,2397780263,1
 Frangula alnus,3039454,2517753694,1
 Fraxinus excelsior,3172358,1252630143,1
-Fraxinus excelsior,3172358,1055613402,0
+Fraxinus excelsior,3172358,1055613402,1
 Fraxinus excelsior,3172358,1949949481,1
 Fraxinus excelsior,3172358,925147941,0
 Fraxinus excelsior,3172358,2268926943,1
 Fraxinus excelsior,3172358,2268925416,1
 Fraxinus excelsior,3172358,2517456007,1
-Fraxinus excelsior,3172358,2457114222,0
-Fraxinus excelsior,3172358,2457158237,0
+Fraxinus excelsior,3172358,2457114222,1
+Fraxinus excelsior,3172358,2457158237,1
 Fraxinus excelsior,3172358,2457126235,1
 Fraxinus excelsior,3172358,2457130237,1
 Fraxinus excelsior,3172358,2457113234,1
@@ -417,7 +417,7 @@ Tilia x europaea,3152046,2457117220,1
 Tilia x europaea,3152046,2457118221,1
 Tilia x europaea,3152046,2236814175,1
 Tilia platyphyllos,3152048,1949945702,1
-Tilia platyphyllos,3152048,1701550601,0
+Tilia platyphyllos,3152048,1701550601,1
 Tilia platyphyllos,3152048,237346978,1
 Tilia platyphyllos,3152048,2514368358,1
 Tilia platyphyllos,3152048,1897272556,1
@@ -425,7 +425,7 @@ Tilia platyphyllos,3152048,1148600235,1
 Tilia platyphyllos,3152048,1148600208,1
 Tilia platyphyllos,3152048,2457131217,1
 Tilia platyphyllos,3152048,2517441996,1
-Tilia cordata,3152047,1701550602,0
+Tilia cordata,3152047,1701550602,1
 Tilia cordata,3152047,912536171,1
 Tilia cordata,3152047,912536229,1
 Tilia cordata,3152047,1897272576,1
@@ -634,7 +634,7 @@ Salix cinerea subsp. oleifolia,5582546,2513843938,1
 Salix cinerea subsp. oleifolia,5582546,2513844441,1
 Salix cinerea subsp. oleifolia,5582546,2513845237,1
 Salix cinerea subsp. oleifolia,5582546,2516953158,1
-Salix cinerea subsp. oleifolia,5582546,1933504659,0
+Salix cinerea subsp. oleifolia,5582546,1933504659,1
 Salix cinerea subsp. oleifolia,5582546,1702084546,1
 Salix cinerea subsp. oleifolia,5582546,2513839586,1
 Salix cinerea subsp. oleifolia,5582546,2513840908,1
