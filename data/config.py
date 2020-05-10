@@ -10,7 +10,8 @@ images_filter = SearchFilter(
     has_coordinate = "",
     kingdom = "", 
     basis_of_record = "PRESERVED_SPECIMEN",
-    institution_code = "" 
+    institution_code = "", 
+    limit = "50"
 ) 
 geodata_filter = SearchFilter(
     search_name = "Occurrence data from native trees in GB",
@@ -19,7 +20,8 @@ geodata_filter = SearchFilter(
     has_coordinate = "True",
     kingdom = "", 
     basis_of_record = "",
-    institution_code = "" 
+    institution_code = "",
+    limit = "50"
 )
 
 species_list = Species(species_list = native_trees_list())
