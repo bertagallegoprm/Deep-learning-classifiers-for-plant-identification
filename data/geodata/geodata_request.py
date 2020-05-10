@@ -96,10 +96,11 @@ if __name__ == "__main__":
     kingdom = geodata_filter.kingdom  
     basis_of_record = geodata_filter.basis_of_record
     institution_code = geodata_filter.institution_code
+    limit = geodata_filter.limit
     ###############################################
 
     # 2- Handle filter parameters
-    filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code}
+    filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code, "limit":limit}
     filter_information = geodata_filter.filter_information()
     ## Hash the filter information + species list string to use it for naming the results file
     filter_hash = filter_hash(geodata_filter, species_list)     

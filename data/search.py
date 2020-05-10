@@ -5,7 +5,7 @@ class SearchFilter(object):
     """
     Search parameters in GBIF API.
     """
-    def __init__(self, search_name, media_type, country, has_coordinate, kingdom, basis_of_record, institution_code):
+    def __init__(self, search_name, media_type, country, has_coordinate, kingdom, basis_of_record, institution_code, limit):
         self.search_name = search_name
         self.media_type = media_type  
         self.country = country
@@ -13,6 +13,7 @@ class SearchFilter(object):
         self.kingdom = kingdom  # Plantae
         self.basis_of_record = basis_of_record
         self.institution_code = institution_code # K (RBG Kew)
+        self.limit = limit
 
     def filter_information(self):
         """
