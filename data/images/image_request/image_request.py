@@ -8,6 +8,8 @@ from data.species_names import native_trees_list
 from data.storage_handler import stop_if_size
 from data.file_handler import image_result_to_csv, open_filter_report
 from data.common_api_request import get_taxon_key, get_occurence_key
+from data.config import images_filter, species_list
+from data.search import filter_hash
 
 
 def get_occurrence_image(species_occurrences_keys, folder):
@@ -89,35 +91,26 @@ def get_results_table(species_occurrences_keys, occurrence_has_image):
 if __name__ == "__main__":
 
     # 1- Customize search parameters 
-
-    ###### Edit for a new search ##################
-    # Search name
-    search_name = "Herbarium specimens images from native trees in GB"
     # Species input
-    species_list = native_trees_list() 
+    species_list = species_list.species_list
+    ###### Edit in config file   ##################
+    # Search name
+    search_name = images_filter.search_name 
     # Filter parameters
-    media_type = "StillImage"  
-    country = "GB"
-    has_coordinate = "" # True/False
-    kingdom = ""  # Plantae
-    basis_of_record = "PRESERVED_SPECIMEN"
-    institution_code = "" # K (RBG Kew)
+    media_type =  images_filter.media_type
+    country = images_filter.country
+    has_coordinate = images_filter.has_coordinate 
+    kingdom = images_filter.kingdom  
+    basis_of_record = images_filter.basis_of_record
+    institution_code = images_filter.institution_code
     ###############################################
 
     # 2- Handle filter parameters
     filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code}
-    filter_information = f"""
-    Filters:
-    mediaType: {media_type}
-    country: {country}
-    hasCoordinate: {has_coordinate}
-    kingdom:{kingdom}
-    basisOfRecord: {basis_of_record}
-    institutionCode: {institution_code}
-    """ 
+    filter_information = images_filter.filter_information()
     ## Hash the filter information + species list string to use it for naming the results file
-    filter_and_species_information = filter_information + str(species_list)
-    filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()     
+    filter_hash = filter_hash(images_filter, species_list)     
+    print(f"Starting request '{search_name}' identified by: {filter_hash}.")
 
     # 3- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)

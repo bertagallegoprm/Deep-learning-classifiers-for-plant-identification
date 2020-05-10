@@ -1,3 +1,29 @@
+from data.search import SearchFilter, Species
+from data.species_names import native_trees_list
+
+
+# SEARCH FILTERS #################################################
+images_filter = SearchFilter(
+    search_name = "Herbarium specimens images from native trees in GB",
+    media_type = "StillImage",  
+    country = "GB",
+    has_coordinate = "",
+    kingdom = "", 
+    basis_of_record = "PRESERVED_SPECIMEN",
+    institution_code = "" 
+) 
+geodata_filter = SearchFilter(
+    search_name = "Occurrence data from native trees in GB",
+    media_type = "",  
+    country = "GB",
+    has_coordinate = "True",
+    kingdom = "", 
+    basis_of_record = "",
+    institution_code = "" 
+)
+
+species_list = Species(species_list = native_trees_list())
+####################################################################
 
 
 class SplitImageDataset:
