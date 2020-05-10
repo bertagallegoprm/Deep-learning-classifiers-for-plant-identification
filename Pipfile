@@ -10,6 +10,8 @@ requests = "*"
 urllib3 = "*"
 tensorflow = "*"
 pandas = "*"
+matplotlib = "*"
+jupyterlab = {editable = true,git = "git://github.com/jupyterlab/jupyterlab.git"}
 
 [requires]
 python_version = "3.7"

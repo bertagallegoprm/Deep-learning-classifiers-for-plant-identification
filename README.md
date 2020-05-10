@@ -23,7 +23,7 @@ sudo apt install python3-pip
 
 - Install pipenv (if required):
 ```buildoutcfg
-pip3 install --user pipenv
+pip3 install pipenv
 ```
 
 - To install the packages from `Pipfile`:
@@ -31,6 +31,15 @@ pip3 install --user pipenv
 ```buildoutcfg
 pipenv install
 ```
+
+Time out error has been reported some times while installing `tensorflow` using `pipenv`. The following can solve it:
+
+- Remove `tensorflow = "*"` from `Pipfile`.
+- Install the remaining dependencies without locking: `pipenv install --skip-lock`
+- Install `tensorflow` increasing the time out: `pipenv run pip --default-timeout=1000 install tensorflow --skip-lock`.
+- Undo the changes in `Pipfile` to include again `tensorflow = "*"`. 
+- Remove the file `.Pipfile.swp`.
+
 
 ## Data download
 
