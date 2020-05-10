@@ -7,7 +7,7 @@ Occurrence data from native trees in GB
     kingdom:
     basisOfRecord: 
     institutionCode: 
-    
+        
 
 Input species list:
 Alnus glutinosa

@@ -6,7 +6,8 @@ import hashlib
 import pdb
 from data.species_names import native_trees_list
 from data.common_api_request import get_taxon_key, get_occurence_key
-
+from data.config import geodata_filter, species_list
+from data.search import filter_hash
 
 def get_occurrence_data(species_occurrences_keys):
     """
@@ -83,35 +84,26 @@ def get_occurrence_data(species_occurrences_keys):
 if __name__ == "__main__":
 
     # 1- Customize search parameters 
-
-    ###### Edit for a new search ##################
-    # Search name
-    search_name = "Occurrence data from native trees in GB"
+    ###### Edit in config file   ##################
     # Species input
-    species_list = native_trees_list() 
+    species_list = species_list.species_list 
+    # Search name
+    search_name = geodata_filter.search_name 
     # Filter parameters
-    media_type = ""  #StillImage
-    country = "GB"
-    has_coordinate = "True" # True/False
-    kingdom = ""  # Plantae
-    basis_of_record = ""
-    institution_code = "" # K (RBG Kew)
+    media_type =  geodata_filter.media_type
+    country = geodata_filter.country
+    has_coordinate = geodata_filter.has_coordinate 
+    kingdom = geodata_filter.kingdom  
+    basis_of_record = geodata_filter.basis_of_record
+    institution_code = geodata_filter.institution_code
     ###############################################
 
     # 2- Handle filter parameters
     filter = {"mediaType": media_type, "country": country, "hasCoordinate": has_coordinate, "kingdom": kingdom, "basisOfRecord": basis_of_record, "institutionCode": institution_code}
-    filter_information = f"""
-    Filters:
-    mediaType: {media_type}
-    country: {country}
-    hasCoordinate: {has_coordinate}
-    kingdom:{kingdom}
-    basisOfRecord: {basis_of_record}
-    institutionCode: {institution_code}
-    """ 
+    filter_information = geodata_filter.filter_information()
     ## Hash the filter information + species list string to use it for naming the results file
-    filter_and_species_information = filter_information + str(species_list)
-    filter_hash = hashlib.md5(str.encode(filter_and_species_information)).hexdigest()     
+    filter_hash = filter_hash(geodata_filter, species_list)     
+    print(f"Starting request '{search_name}' identified by: {filter_hash}.")    
 
     # 3- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)
