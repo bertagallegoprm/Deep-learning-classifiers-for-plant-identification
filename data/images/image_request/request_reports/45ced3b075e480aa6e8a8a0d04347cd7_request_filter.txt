@@ -7,7 +7,7 @@ Herbarium specimens images from native trees in GB
     kingdom:
     basisOfRecord: PRESERVED_SPECIMEN
     institutionCode: 
-    
+        
 
 Input species list:
 Alnus glutinosa

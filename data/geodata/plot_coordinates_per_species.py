@@ -51,4 +51,4 @@ if __name__ == "__main__":
     geodata = get_geodata_csv()
     species_name = unique(get_species_list(geodata))
     occurrence_count = get_occurrence_count(get_species_list(geodata))   
-    plot_coordenates_count(occurrence_count, species_name)
+    plot_coordenates_count(occurrence_count, species_name, path_to_plot)
