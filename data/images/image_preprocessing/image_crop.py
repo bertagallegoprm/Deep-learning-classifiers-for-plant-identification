@@ -37,11 +37,13 @@ def crop_image(source_dir, destination_dir, image_file):
 
     # Import the image
     try:
-        image = tf.image.decode_png(tf.io.read_file(f"{source_dir}/{image_file}"), channels=3)
+        image = tf.image.decode_jpeg(tf.io.read_file(f"{source_dir}/{image_file}"), channels=3)
+        # Scale
+        
         # Crop the image as per the parameters
         try:
             cropped_image_tensor = tf.image.crop_to_bounding_box(image, offset_height, offset_width, target_height, target_width)
-            output_image = tf.image.encode_png(cropped_image_tensor)
+            output_image = tf.image.encode_jpeg(cropped_image_tensor)
             # Save image
             try:
                 # Create species folder if it does not exist
@@ -53,12 +55,12 @@ def crop_image(source_dir, destination_dir, image_file):
                 tf.io.write_file(file_name, output_image)
             except:
                 return print(f"Unable to save image {image_file}.")
+            else:
+                print(f"{image_file} saved to {image_crop_path}.")
         except:
             return print(f"Unable to crop image {image_file}.")
     except:
         return print(f"Unable to open image {image_file}.")
-    else:
-        print(f"{image_file} saved to {image_crop_path}.")
 
 
 def crop_all_raw_images(source_dir, destination_dir):
