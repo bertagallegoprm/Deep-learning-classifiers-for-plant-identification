@@ -1,8 +1,28 @@
 import tensorflow as tf
 import os
+import errno
+import shutil
 
 
-def crop_image(folder_path, image_file):
+def create_empty_dir(base_path, directory):
+    """
+    Create a new directory.
+    If it already exists, it deletes it and all its contents.
+    It returns the new directory path.
+    """
+    full_path = base_path + directory
+    print(f"Creating directory: {full_path}")
+    try:
+        shutil.rmtree(full_path)
+    except:
+        pass
+    finally:
+        os.mkdir(full_path)
+        print (f"Created directory {full_path}.")
+        return full_path
+
+
+def crop_image(source_dir, destination_dir, image_file):
     """
     Documentation: https://www.tensorflow.org/api_docs/python/tf/image/crop_to_bounding_box
     """
