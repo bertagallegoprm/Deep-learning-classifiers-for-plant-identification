@@ -23,21 +23,21 @@ def create_empty_dir(base_path, directory):
 
 
 def resize_image(source_dir, destination_dir, image_file):
-    newsize = (150, 150) 
+    newsize = (600, 600) 
     try:
-        image = Image.open(r""+source_dir+""+image_file+"")  
+        image = Image.open(os.path.join(source_dir, image_file))  
         try:
             image = image.resize(newsize)
             try:
                 if not os.path.exists(destination_dir):
                     os.mkdir(destination_dir)
-                image = image.save(f"{destination_dir}{image_file}") 
+                image = image.save(os.path.join(destination_dir,image_file)) 
             except: 
-                return print("Unable to save image.")
+                return print(f"Unable to save image {image_file}.")
         except:
-            return print("Unable to resize image.")
+            return print(f"Unable to resize image {image_file}.")
     except:
-        print("Unable to open image.")
+        print(f"Unable to open image {image_file}.")
     
      
     
