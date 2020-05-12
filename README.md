@@ -4,7 +4,7 @@
 
 ### Set up the working directory (Ubuntu)
 
-I am using `pipenv` to create a virtual environment and manage the dependencies.
+I am using `pip` and `virtualenv` to create a virtual environment and manage the dependencies.
 
 
 - Clone the repo from GitHub: 
@@ -14,31 +14,52 @@ git clone -b master https://github.com/bertagallegoprm/tfm.git
 
 > Add remote branches if required `git checkout -b branch-name origin/branch-name`
 
-You will need to have installed `pip` and `pipenv` to create the virtual environment (read more about `pipenv` [here](https://pipenv-fork.readthedocs.io/en/latest/)):
+You will need to have installed `pip` and `virtualenv` to create the virtual environment (more information here: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
-- Install pip (if required):
+- Install pip for python3 (if required):
 ```buildoutcfg
 sudo apt install python3-pip
 ```
 
-- Install pipenv (if required):
-```buildoutcfg
-pip3 install pipenv
+- Install python-dev, virtualenv and venv (if required):
+
+```
+sudo apt-get install python-dev
 ```
 
-- To install the packages from `Pipfile`:
-
-```buildoutcfg
-pipenv install
+```
+pip3.7 install virtualenv
 ```
 
-Time out error has been reported some times while installing `tensorflow` using `pipenv`. The following can solve it:
+```
+sudo apt-get install python3.7-venv
+```
 
-- Remove `tensorflow = "*"` from `Pipfile`.
-- Install the remaining dependencies without locking: `pipenv install --skip-lock`
-- Install `tensorflow` increasing the time out: `pipenv run pip --default-timeout=1000 install tensorflow --skip-lock`.
-- Undo the changes in `Pipfile` to include again `tensorflow = "*"`. 
-- Remove the file `.Pipfile.swp`.
+- Create a virtual environment (here called "env").
+```
+python3 -m venv env
+```
+
+- Activate the environment:
+```
+source env/bin/activate
+```
+> To deactivate the environment run: `deactivate`. 
+
+- To install the packages from `requirements.txt`:
+
+```
+pip3 install -r requirements.txt
+```
+
+If `tensorflow` installation from `requirements.txt` fails, try (fromhttps://www.tensorflow.org/install/pip):
+```
+pip install --upgrade tensorflow
+```
+And test if installed:
+```
+python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+```
 
 
 ## Data download
