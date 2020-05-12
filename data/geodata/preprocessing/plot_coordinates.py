@@ -1,7 +1,39 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import descartes
+import geopandas as gpd
+import shapely
+from shapely.geometry import Point, Polygon
+from shapely import geometry
 from data.search import filter_hash
 from data.config import geodata_filter, species_list
 from data.file_handler import create_dataframe_from_csv, column_to_list
+
+
+def plot_occurrences_map(coordinates_df, shape_file):
+    """
+    Given a shape file for a geographical area
+    and a dataframe with at least two columns:
+    - latitude
+    - longitde
+    return an occurrences map in .png format
+    """
+    # Add a new column to the data frame with a combination of coordinates
+    coordinate_pair = [Point(xy) for xy in zip(coordinates_df.longitude, coordinates_df.latitude)]
+    coordinates_df['geometry'] = coordinate_pair
+    coordinates_df.drop(['latitude','longitude'], axis = 1, inplace=True)
+    crs = {'init': 'epsg:4326'}
+    occurrences_loc = gpd.GeoDataFrame(coordinates_df, crs=crs, geometry=coordinate_pair)
+    occurrences_loc.shape
+ 
+    shape_map = gpd.read_file(shape_file)
+    fig, ax = plt.subplots(figsize = (10,10))
+    occurrences_loc.geometry.plot(marker="d", color="green", markersize=1, ax=ax, label = "Species occurrences")
+    shape_map.plot(color="grey", ax=ax, alpha = 0.2)
+   
+    plt.title('Species occurrences map')
+    plt.legend()
+    plt.savefig("data/geodata/preprocessing/occurrences_map.png")
 
 
 if __name__ == "__main__":
@@ -16,6 +48,9 @@ if __name__ == "__main__":
     latitude = column_to_list(df, "decimal_latitude")
     longitude = column_to_list(df, "decimal_longitude")
     species_name = column_to_list(df, "species_name")
-    df_map = pd.DataFrame(list(zip(species_name, latitude, longitude)), 
+    coordinates_df = pd.DataFrame(list(zip(species_name, latitude, longitude)), 
     columns = ["species_name", "latitude", "longitude"])
-    print(df_map)
+
+    # Plot occurrences location
+    shape_file = "data/geodata/uk_maps/GBR_adm0.shp" # UK map
+    plot_occurrences_map(coordinates_df, shape_file)
