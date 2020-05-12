@@ -4,25 +4,6 @@ import errno
 import shutil
 
 
-def scale_image(image):
-    """
-    Given an image stored as tensor,
-    scale to a fixed pixel number.
-    (From documentation: "Resizes an image to a target width and height
-    by keeping the aspect ratio the same without distortion. 
-    If the target dimensions don't match the image dimensions, 
-    the image is resized and then padded with zeroes 
-    to match requested dimensions.)
-    """
-    target_height = 150
-    target_width = 150
-    tf.image.resize_with_pad(
-    image, target_height, target_width, method=ResizeMethod.BILINEAR,
-    antialias=False
-    )
-    return image
-
-
 def create_empty_dir(base_path, directory):
     """
     Create a new directory.
@@ -59,8 +40,8 @@ def crop_image(tensor, image_file):
     """
     ## Set the variable values here
     # Offset variables values (top-left corner)
-    offset_height= 400 # Vertical coordinate 
-    offset_width = 200 # Horizontal coordinate
+    offset_height= 100 # Vertical coordinate 
+    offset_width = 50 # Horizontal coordinate
     # Target variables values 
     target_height = 100 # Height of the result
     target_width = 100 # Width of the result
@@ -68,6 +49,23 @@ def crop_image(tensor, image_file):
         return tf.image.crop_to_bounding_box(tensor, offset_height, offset_width, target_height, target_width)
     except:
         return print(f"Unable to crop image {image_file}.")
+
+
+def resize_image(tensor, image_file):
+    """
+    Given an image stored as tensor,
+    scale to a fixed pixel number.
+    (From documentation: "Resizes an image to a target width and height
+    by keeping the aspect ratio the same without distortion. 
+    If the target dimensions don't match the image dimensions, 
+    the image is resized and then padded with zeroes 
+    to match requested dimensions.)
+    """
+    size = [100,100]
+    try:
+        return tf.image.resize_images(tensor, size,  method=tf.image.ResizeMethod.BILINEAR)
+    except:
+        return print(f"Unable to resize image {image_file}.")
 
 
 def tensor_to_jpg(tensor, destination_dir, image_file):
@@ -89,7 +87,7 @@ def tensor_to_jpg(tensor, destination_dir, image_file):
         print(f"{image_file} saved to {image_path}.")
 
 
-def crop_all_raw_images(source_dir, destination_dir):
+def resize_and_crop_all_raw(source_dir, destination_dir):
     """
     Apply crop_image() to every image in the source directory.
     The source directory must have subfolders for each of the classes.
@@ -98,7 +96,8 @@ def crop_all_raw_images(source_dir, destination_dir):
         for species_folder in os.listdir(source_dir):
             for image_file in os.listdir(os.path.join(source_dir, species_folder)):
                 tensor = jpg_to_tensor(os.path.join(source_dir, species_folder), image_file)
-                crop_image(tensor, image_file)
+                tensor = resize_image(tensor, image_file)
+                tensor = crop_image(tensor, image_file)
                 tensor_to_jpg(tensor, os.path.join(destination_dir, species_folder), image_file)
     else:
         print(f"Folder {source_dir} not found.")
@@ -109,9 +108,9 @@ if __name__ == "__main__":
 
     # Create destination directory for the cropped images
     base_path = "data/images/image_preprocessing/"
-    cropped_directory = "cropped_images"
-    destination_dir = create_empty_dir(base_path, cropped_directory)
+    directory = "cropped_images"
+    destination_dir = create_empty_dir(base_path, directory)
 
     # Crop all images in the raw_images directory
     source_dir = "data/images/raw_images/"
-    crop_all_raw_images(source_dir, destination_dir) 
+    resize_and_crop_all_raw(source_dir, destination_dir) 
