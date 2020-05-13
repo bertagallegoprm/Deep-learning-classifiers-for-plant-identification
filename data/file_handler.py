@@ -61,4 +61,10 @@ def create_dataframe_from_csv(path_to_csv):
     return df
     
 
+def column_to_list(df, column):
+    try:
+        return df[column].tolist()
+    except:
+        print(f"Unable to extract {column} from {df}.")
+
 
