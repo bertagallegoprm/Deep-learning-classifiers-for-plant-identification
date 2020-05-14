@@ -11,14 +11,28 @@ def which_none(column_as_list):
     or there are not None values. 
     """
     if all(column_as_list) is None:
-        return "All items are None in list."
+        print("All items are None in list.") # then column should be dropped
+        return
     else:
         none_items = [i for i, val in enumerate(column_as_list) if val == None]
         if not none_items:
-            return "There are not None values in list."
+            print("There are not None values in list.")
+            return 
         else:
-            print(f"None items: {none_items}")
+            print(f"None items: {none_items}") # then rows should be dropped
             return none_items
+
+
+def drop_none_rows(coordinates_df, rows):
+    """
+    Drop rows in the dataframe that have None values.
+    """
+    if rows is not None:
+        for row in rows:
+            coordinates_df.drop(row)
+            print(f"Row {row} removed from data set")
+    else:
+        print("No rows to remove.")
 
 
 if __name__ == "__main__":
@@ -42,9 +56,13 @@ if __name__ == "__main__":
                                   }) 
 
     # Find empty coordinates
-    print(which_none(latitude))
-    print(which_none(longitude))
-    print(which_none(uncertainity))
+    print("Filter latitude:")
+    drop_none_rows(coordinates_df, which_none(latitude))
+    print("Filter longitude:")
+    drop_none_rows(coordinates_df, which_none(longitude))
+    print("Filter uncertainty:")
+    drop_none_rows(coordinates_df, which_none(uncertainity))
+
 
     # Low precission (100 km)
 
