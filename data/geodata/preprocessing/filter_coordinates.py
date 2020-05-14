@@ -93,3 +93,7 @@ if __name__ == "__main__":
 
     # Duplicates
     filter_duplicates = drop_duplicate_coordinates(filter_uncertain)
+
+    # Save filtered CSV
+    csv_file_name = "data/geodata/preprocessing/filtered_coordinates.csv"
+    filter_duplicates.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
