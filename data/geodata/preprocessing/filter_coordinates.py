@@ -23,14 +23,26 @@ def which_none(column_as_list):
             return none_items
 
 
+def which_low_precision(column_as_list, max_uncertainty):
+    """
+    Return the position of elements in a list 
+    for uncertainty greater than 
+    """
+    unprecise_occurrences = [i for i, val in enumerate(column_as_list) if val > max_uncertainty] 
+    print(f"{len(unprecise_occurrences)} occurrences have uncertainty above {max_uncertainty} m.")
+    return unprecise_occurrences
+    
+
 def drop_none_rows(coordinates_df, rows):
     """
     Drop rows in the dataframe that have None values.
     """
+    filtered = coordinates_df
     if rows is not None:
         for row in rows:
-            coordinates_df.drop(row)
+            filtered = filtered.drop(row)
             print(f"Row {row} removed from data set")
+        return filtered
     else:
         print("No rows to remove.")
 
@@ -47,12 +59,12 @@ if __name__ == "__main__":
     latitude = column_to_list(df, "decimal_latitude")
     longitude = column_to_list(df, "decimal_longitude")
     species_name = column_to_list(df, "species_name")
-    uncertainity = column_to_list(df, "coordinate_uncertainty")
+    uncertainty = column_to_list(df, "coordinate_uncertainty")
 
     coordinates_df = pd.DataFrame({"species_name": species_name, 
                                    "latitude": latitude,
                                    "longitude": longitude,
-                                   "uncertainity": uncertainity
+                                   "uncertainty": uncertainty
                                   }) 
 
     # Find empty coordinates
@@ -61,8 +73,10 @@ if __name__ == "__main__":
     print("Filter longitude:")
     drop_none_rows(coordinates_df, which_none(longitude))
     print("Filter uncertainty:")
-    drop_none_rows(coordinates_df, which_none(uncertainity))
+    drop_none_rows(coordinates_df, which_none(uncertainty))
 
 
-    # Low precission (100 km)
-
+    # Low precission (10 000 m)
+    max_uncertainty = 10000
+    print(which_low_precision(uncertainty, max_uncertainty))
+    filtered_df = drop_none_rows(coordinates_df, which_low_precision(uncertainty, max_uncertainty) )
