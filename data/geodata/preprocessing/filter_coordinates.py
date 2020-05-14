@@ -33,7 +33,7 @@ def which_low_precision(column_as_list, max_uncertainty):
     return unprecise_occurrences
     
 
-def drop_none_rows(coordinates_df, rows):
+def drop_rows_by_index(coordinates_df, rows):
     """
     Drop rows in the dataframe that have None values.
     """
@@ -45,6 +45,16 @@ def drop_none_rows(coordinates_df, rows):
         return filtered
     else:
         print("No rows to remove.")
+
+
+def drop_duplicate_coordinates(coordinates_df):
+    """
+    Return a dataframe with no duplicates coordinates 
+    for the same species name.
+    """
+    no_duplicates = coordinates_df.drop_duplicates(["species_name","longitude", "latitude"])
+    print(f"Removed {len(coordinates_df)-len(no_duplicates)} duplicated rows.")
+    return no_duplicates
 
 
 if __name__ == "__main__":
@@ -69,14 +79,17 @@ if __name__ == "__main__":
 
     # Find empty coordinates
     print("Filter latitude:")
-    drop_none_rows(coordinates_df, which_none(latitude))
+    drop_rows_by_index(coordinates_df, which_none(latitude))
     print("Filter longitude:")
-    drop_none_rows(coordinates_df, which_none(longitude))
+    drop_rows_by_index(coordinates_df, which_none(longitude))
     print("Filter uncertainty:")
-    drop_none_rows(coordinates_df, which_none(uncertainty))
+    drop_rows_by_index(coordinates_df, which_none(uncertainty))
 
 
     # Low precission (10 000 m)
     max_uncertainty = 10000
     print(which_low_precision(uncertainty, max_uncertainty))
-    filtered_df = drop_none_rows(coordinates_df, which_low_precision(uncertainty, max_uncertainty) )
+    filter_uncertain = drop_rows_by_index(coordinates_df, which_low_precision(uncertainty, max_uncertainty) )
+
+    # Duplicates
+    filter_duplicates = drop_duplicate_coordinates(filter_uncertain)
