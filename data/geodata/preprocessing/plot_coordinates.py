@@ -10,7 +10,7 @@ from data.config import geodata_filter, species_list
 from data.file_handler import create_dataframe_from_csv, column_to_list
 
 
-def plot_occurrences_map(coordinates_df, shape_file):
+def plot_occurrences_map(coordinates_df, shape_file, destination_path):
     """
     Given a shape file for a geographical area
     and a dataframe with at least two columns:
@@ -33,7 +33,7 @@ def plot_occurrences_map(coordinates_df, shape_file):
    
     plt.title('Species occurrences map')
     plt.legend()
-    plt.savefig("data/geodata/preprocessing/occurrences_map.png")
+    plt.savefig(destination_path)
 
 
 if __name__ == "__main__":
@@ -52,5 +52,6 @@ if __name__ == "__main__":
     columns = ["species_name", "latitude", "longitude"])
 
     # Plot occurrences location
+    destination_path = "data/geodata/preprocessing/occurrences_map.png"
     shape_file = "data/geodata/uk_maps/GBR_adm0.shp" # UK map
-    plot_occurrences_map(coordinates_df, shape_file)
+    plot_occurrences_map(coordinates_df, shape_file, destination_path)
