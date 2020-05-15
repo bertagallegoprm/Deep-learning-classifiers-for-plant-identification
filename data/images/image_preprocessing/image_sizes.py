@@ -59,8 +59,8 @@ def plot_image_dimensions(img_sizes):
     widths = get_widths(img_sizes)
     heights = get_heights(img_sizes)
     plt.scatter(widths, heights, alpha=0.8, color="grey", marker="o", s=2)
-    plt.xlabel("Image widths (px)", fontsize=8)
-    plt.ylabel("Image heights (px)", fontsize=8)
+    plt.xlabel("Image width (px)", fontsize=8)
+    plt.ylabel("Image height (px)", fontsize=8)
     plt.xticks(fontsize=8)
     plt.yticks(fontsize=8)
 
@@ -73,7 +73,7 @@ def plot_dimension_distribution(img_sizes):
              color=["lightgrey","lightblue"], 
              edgecolor="grey", label=["Width","Height"])
     plt.ylabel("Frequency", fontsize=8)
-    plt.xlabel("Image widths / heights (px)", fontsize=8)
+    plt.xlabel("Image width / height (px)", fontsize=8)
     plt.xticks(fontsize=8)
     plt.yticks(fontsize=8)
     plt.legend()
