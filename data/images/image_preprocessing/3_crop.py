@@ -2,6 +2,7 @@ import tensorflow as tf
 import os
 import errno
 import shutil
+from PIL import Image
 
 
 def create_empty_dir(base_path, directory):
@@ -51,6 +52,27 @@ def crop_image(tensor, image_file):
         return print(f"Unable to crop image {image_file}.")
 
 
+def crop_image_pil(source_dir, destination_dir, image_file):
+    left = 200
+    top = 400
+    right = 400
+    bottom = 200
+    try:
+        source_image = Image.open(os.path.join(source_dir, image_file))  
+        try:
+            cropped_image = source_image.crop((200,400,400, 200))
+            try:
+                if not os.path.exists(destination_dir):
+                    os.mkdir(destination_dir)
+                cropped_image.save(os.path.join(destination_dir,image_file)) 
+            except: 
+                return print(f"Unable to save image {image_file}.")
+        except:
+            return print(f"Unable to crop image {image_file}.")
+    except:
+        print(f"Unable to open image {image_file}.")
+
+
 def resize_image(tensor, image_file):
     """
     Given an image stored as tensor,
@@ -95,10 +117,14 @@ def crop_all(source_dir, destination_dir):
     if os.path.exists(source_dir):
         for species_folder in os.listdir(source_dir):
             for image_file in os.listdir(os.path.join(source_dir, species_folder)):
-                image = jpg_to_tensor(os.path.join(source_dir, species_folder), image_file)
+                #image = jpg_to_tensor(os.path.join(source_dir, species_folder), image_file)
                 #image = resize_image(image, image_file)
-                image = crop_image(image, image_file)
-                tensor_to_jpg(image, os.path.join(destination_dir, species_folder), image_file)
+                #image = crop_image(image, image_file)
+                #tensor_to_jpg(image, os.path.join(destination_dir, species_folder), image_file)
+                crop_image_pil(os.path.join(source_dir, species_folder),
+                               os.path.join(destination_dir, species_folder),
+                               image_file
+                               )
     else:
         print(f"Folder {source_dir} not found.")
     print("End.")
