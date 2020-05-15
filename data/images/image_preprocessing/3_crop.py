@@ -4,7 +4,7 @@ import errno
 import shutil
 from PIL import Image
 from data.config import cropping
-from data.image import ImagePreprocessing
+from data.image import ImageDimension
 
 
 def create_empty_dir(base_path, directory):
