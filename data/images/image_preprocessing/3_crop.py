@@ -3,6 +3,8 @@ import os
 import errno
 import shutil
 from PIL import Image
+from data.config import cropping
+from data.image import ImagePreprocessing
 
 
 def create_empty_dir(base_path, directory):
@@ -52,7 +54,7 @@ def crop_image(tensor, image_file):
         return print(f"Unable to crop image {image_file}.")
 
 
-def crop_image_pil(source_dir, destination_dir, image_file):
+def crop_image_pil(source_dir, destination_dir, image_file, crop_coords):
     """
     Crop an image by reference points in x,y axis:
     - left (x), top (y)
@@ -60,14 +62,10 @@ def crop_image_pil(source_dir, destination_dir, image_file):
     Opens image file from source directory 
     and saves it in the destination directory.
     """
-    left = 200
-    top = 200
-    right = 400
-    bottom = 400
     try:
         source_image = Image.open(os.path.join(source_dir, image_file))  
         try:
-            cropped = source_image.crop((left,top,right,bottom))
+            cropped = source_image.crop(crop_coords)
             try:
                 if not os.path.exists(destination_dir):
                     os.mkdir(destination_dir)
@@ -116,7 +114,7 @@ def tensor_to_jpg(tensor, destination_dir, image_file):
         print(f"{image_file} saved to {image_path}.")
 
 
-def crop_all(source_dir, destination_dir):
+def crop_all(source_dir, destination_dir, cropping_coordinates):
     """
     Apply crop_image() to every image in the source directory.
     The source directory must have subfolders for each of the classes.
@@ -130,7 +128,8 @@ def crop_all(source_dir, destination_dir):
                 #tensor_to_jpg(image, os.path.join(destination_dir, species_folder), image_file)
                 crop_image_pil(os.path.join(source_dir, species_folder),
                                os.path.join(destination_dir, species_folder),
-                               image_file
+                               image_file,
+                               cropping_coordinates
                                )
     else:
         print(f"Folder {source_dir} not found.")
@@ -146,4 +145,5 @@ if __name__ == "__main__":
 
     # Crop all images in the directory
     source_dir = "data/images/image_preprocessing/resized_images/"
-    crop_all(source_dir, destination_dir) 
+    crop_coords = cropping.coordinates()
+    crop_all(source_dir, destination_dir, crop_coords) 

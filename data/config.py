@@ -1,5 +1,6 @@
 from data.search import SearchFilter, Species
 from data.species_names import native_trees_list
+from data.image import ImagePreprocessing
 
 
 # SEARCH FILTERS #################################################
@@ -26,6 +27,15 @@ geodata_filter = SearchFilter(
 
 species_list = Species(species_list = native_trees_list())
 ####################################################################
+
+# IMAGE PREPROCESSING ##############################################
+
+cropping = ImagePreprocessing(
+    left = 300,
+    top = 400,
+    right = 900,
+    bottom = 1600
+)
 
 
 class SplitImageDataset:
