@@ -2,7 +2,9 @@ import os
 import errno
 import shutil
 from PIL import Image
-import PIL
+from data.config import resizing
+from data.image import ImageDimension
+
 
 def create_empty_dir(base_path, directory):
     """
@@ -22,12 +24,13 @@ def create_empty_dir(base_path, directory):
         return full_path
 
 
-def resize_image(source_dir, destination_dir, image_file):
-    newsize = (600, 600) 
+def resize_image(source_dir, destination_dir, image_file, new_size):
+    """
+    """
     try:
         image = Image.open(os.path.join(source_dir, image_file))  
         try:
-            image = image.resize(newsize)
+            image = image.resize(new_size)
             try:
                 if not os.path.exists(destination_dir):
                     os.mkdir(destination_dir)
@@ -42,7 +45,7 @@ def resize_image(source_dir, destination_dir, image_file):
      
     
 
-def resize_all_images(source_dir, destination_dir):
+def resize_all_images(source_dir, destination_dir, new_size):
     """
     Apply crop_image() to every image in the source directory.
     The source directory must have subfolders for each of the classes.
@@ -50,7 +53,10 @@ def resize_all_images(source_dir, destination_dir):
     if os.path.exists(source_dir):
         for species_folder in os.listdir(source_dir):
             for image_file in os.listdir(os.path.join(source_dir, species_folder)):
-                resize_image(os.path.join(source_dir, species_folder), os.path.join(destination_dir, species_folder), image_file)
+                resize_image(os.path.join(source_dir, species_folder), 
+                             os.path.join(destination_dir, species_folder), 
+                             image_file,
+                             new_size)
     else:
         print(f"Folder {source_dir} not found.")
     print("End.")
@@ -60,11 +66,14 @@ def resize_all_images(source_dir, destination_dir):
 
 if __name__ == "__main__":
 
-   # Create destination directory for the resized images
+    # SOURCE DIR
+    source_dir = "data/images/raw_images/"
+
+    # DESTINATION DIR
     base_path = "data/images/image_preprocessing/"
     directory = "resized_images"
     destination_dir = create_empty_dir(base_path, directory)
 
-    # Resize images
-    source_dir = "data/images/raw_images/"
-    resize_all_images(source_dir, destination_dir)
+    # Resize
+    new_size = resizing.image_size()
+    resize_all_images(source_dir, destination_dir, new_size)

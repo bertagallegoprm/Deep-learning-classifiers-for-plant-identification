@@ -1,19 +1,28 @@
 
-class ImagePreprocessing(object):
+class ImageDimension(object):
     """
     Parameters related to image preprocessing.
     """
-    def __init__(self, left, top, right, bottom):
+    def __init__(self, left, top, right, bottom, width, height):
         self.left = left
         self.top = top  
         self.right = right
         self.bottom = bottom 
+        self.width = width
+        self.height = height
 
     def coordinates(self):
         """
         Return a list with coordinates for area selection.
         """
         return (self.left, self.top, self.right, self.bottom)
+
+    def image_size(self):
+        """
+        Return a list with width and height for area selection.
+        """
+        return (self.width, self.height)
+
          
 
 
