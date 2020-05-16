@@ -31,10 +31,10 @@ species_list = Species(species_list = native_trees_list())
 # IMAGE PREPROCESSING ##############################################
 
 cropping = ImageDimension(
-    left = 300,
+    left = 200,
     top = 400,
-    right = 900,
-    bottom = 1600,
+    right = 950,
+    bottom = 1250,
     width = "",
     height = ""
 )
