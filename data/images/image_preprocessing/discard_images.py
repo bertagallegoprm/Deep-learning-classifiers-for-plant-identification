@@ -1,6 +1,4 @@
 import os
-from data.images.image_preprocessing.crop import crop_image_pil
-
 
 def remove_files(directory, file_list):
     """
@@ -96,10 +94,3 @@ if __name__ == "__main__":
 
     # Remove faulty images
     remove_files(source_dir,faulty_images)
-
-
-    # # Recrop some images
-    # crop_image_pil(os.path.join(base_path, "resized_images", "Betula_pubescens"),
-    #                os.path.join(destination_dir, "Betula_pubescens"),
-    #                 , 
-    #                 crop_coords)
