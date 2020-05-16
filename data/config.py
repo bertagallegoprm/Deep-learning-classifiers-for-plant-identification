@@ -80,7 +80,7 @@ class ImageGenerator:
     img_height = 150 # if 50: pixels too big; if 250: too much noise
     img_width = 150   
     class_mode="categorical" 
-    batch_size = 128 
+    batch_size = 3 
     epochs = 15                                     
     shuffle=True                                                               
     seed = 1234 
