@@ -55,10 +55,10 @@ class SplitImageDataset:
     and how to split into train and test datasets.
     """
     # Image directories
-    raw_image_dir = "data/images/raw_images/"
-    train_dir = raw_image_dir + "train"
-    test_dir = raw_image_dir + "test"
-    val_dir = raw_image_dir + "val"
+    source_dir = "data/images/image_preprocessing/cropped_images/"
+    train_dir = source_dir + "train"
+    test_dir = source_dir + "test"
+    val_dir = source_dir + "val"
     # Train and test sizes
     train_size = 60
     test_size = 20
