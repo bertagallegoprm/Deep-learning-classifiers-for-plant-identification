@@ -1,8 +1,9 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from data.search import filter_hash
 from data.config import geodata_filter, species_list
 from data.file_handler import create_dataframe_from_csv, column_to_list
-from data.geodata.preprocessing.plot_coordinates import plot_occurrences_map
+from data.geodata.preprocessing.plot_coordinates import plot_occurrences_map, plot_coordinates_frequency
 from data.geodata.plot_coordinates_per_species import plot_coordenates_count, unique, get_species_list, get_occurrence_count
 
 def which_none(column_as_list):
@@ -66,6 +67,9 @@ def drop_duplicate_coordinates(coordinates_df):
     return no_duplicates
 
 
+
+
+
 if __name__ == "__main__":
 
     # Open CSV file with the occurrences data.
@@ -123,4 +127,7 @@ if __name__ == "__main__":
     occurrence_count = get_occurrence_count(get_species_list(geodata))   
     plot_coordenates_count(occurrence_count, species_name, path_to_plot)
 
+    # Plot coordinates histogram
+    destination_path = "data/geodata/preprocessing/filtered_coordinates_distribution.png"
+    plot_coordinates_frequency(coordinates_df, destination_path)
 

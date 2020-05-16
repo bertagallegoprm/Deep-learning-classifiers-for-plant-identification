@@ -31,7 +31,37 @@ def plot_occurrences_map(coordinates_df, shape_file, destination_path):
     occurrences_loc.geometry.plot(marker="d", color="green", markersize=1, ax=ax, label = "Species occurrences")
     shape_map.plot(color="grey", ax=ax, alpha = 0.2)
    
-    plt.title('Species occurrences map')
+    plt.title('Species distribution map')
+    plt.legend()
+    plt.savefig(destination_path)
+
+
+def plot_coordinates_frequency(coordinates_df, destination_path):
+    """
+    Given a data frame with latitude and longitude
+    return an histogram with the frequency of the coordinates.
+    """
+    latitude = column_to_list(coordinates_df, "latitude")
+    longitude = column_to_list(coordinates_df, "longitude")
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, sharey=True, figsize=(6, 6))
+    #fig, axs = plt.subplots(2)
+    fig.suptitle('Coordinates distribution')
+    plt.subplot(2,1,1)
+    plt.hist(latitude, bins = 40, alpha = 0.5, 
+             color="lightgreen", 
+             edgecolor="grey")
+    plt.ylabel("Frequency", fontsize=8)
+    plt.xlabel("Latitude (decimal degrees)", fontsize=8)
+    plt.xticks(fontsize=8)
+    plt.yticks(fontsize=8)
+    plt.subplot(2,1,2)
+    plt.hist(longitude, bins = 40, alpha = 0.5, 
+            color="lightpink", 
+            edgecolor="grey")
+    plt.ylabel("Frequency", fontsize=8)
+    plt.xlabel("Longitude (decimal degrees)", fontsize=8)
+    plt.xticks(fontsize=8)
+    plt.yticks(fontsize=8)
     plt.legend()
     plt.savefig(destination_path)
 
