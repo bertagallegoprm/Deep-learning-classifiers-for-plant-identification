@@ -22,7 +22,7 @@ geodata_filter = SearchFilter(
     kingdom = "", 
     basis_of_record = "",
     institution_code = "",
-    limit = "30"
+    limit = "100"
 )
 
 species_list = Species(species_list = native_trees_list())
