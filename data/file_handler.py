@@ -1,6 +1,8 @@
 from datetime import datetime
 import os
 import pandas as pd
+import shutil
+
 
 
 def get_timestamp():
@@ -68,3 +70,15 @@ def column_to_list(df, column):
         print(f"Unable to extract {column} from {df}.")
 
 
+def copy_dir(src_path, dest_path):
+    """
+    Copy all the files in the source directory 
+    to a newly created destination directory.
+    """
+    try:
+        shutil.rmtree(dest_path)
+    except:
+        pass
+    finally:
+        shutil.copytree(src_path, dest_path)
+        print(f"{src_path} copied to {dest_path}")

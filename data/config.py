@@ -49,24 +49,6 @@ resizing = ImageDimension(
 )
 
 
-class SplitImageDataset:
-    """
-    Set up parameters to configure image location
-    and how to split into train and test datasets.
-    """
-    # Image directories
-    raw_image_dir = "data/images/raw_images/"
-    train_dir = raw_image_dir + "train"
-    test_dir = raw_image_dir + "test"
-    val_dir = raw_image_dir + "val"
-    # Train and test sizes
-    train_size = 60
-    test_size = 20
-    val_size = 20
-    # Seed for the random image sampling
-    seed = 1234
-
-
 class ImageGenerator:
     """
     color_mode - "rgb" for 3 color channel, "grayscale" for black and white.
