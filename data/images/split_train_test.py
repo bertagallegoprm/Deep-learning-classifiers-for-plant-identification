@@ -1,14 +1,6 @@
 import os
 import random
-import shutil
-
-def copy_dir(src_path, dest_path):
-    try:
-        shutil.rmtree(dest_path)
-    except:
-        pass
-    finally:
-        shutil.copytree(src_path, dest_path)
+from data.file_handler import copy_dir
 
 
 def split_train_val_test(directory, train_size, test_size):
