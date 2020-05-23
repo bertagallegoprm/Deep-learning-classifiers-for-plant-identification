@@ -9,3 +9,6 @@ env
 
 # jupyter notebooks checkpoints
 .ipynb_checkpoints 
+
+# models outputs
+outputs
