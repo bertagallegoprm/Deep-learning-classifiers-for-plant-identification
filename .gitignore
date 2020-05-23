@@ -6,3 +6,6 @@ working_data_request.py
 
 # virtual environment directory
 env
+
+# jupyter notebooks checkpoints
+.ipynb_checkpoints 
