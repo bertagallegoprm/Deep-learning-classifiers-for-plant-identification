@@ -61,6 +61,12 @@ And test if installed:
 python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 ```
 
+- To plot the model architecture an aditional library (`GraphViz`) is needed at the system level. Install it outside the virtual environment:
+
+```
+sudo apt-get install graphviz
+```
+
 
 ## Data download
 
