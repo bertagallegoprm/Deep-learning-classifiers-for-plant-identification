@@ -5,14 +5,14 @@ from data.image import ImageDimension
 
 # SEARCH FILTERS #################################################
 images_filter = SearchFilter(
-    search_name = "Herbarium specimens images from native trees in GB",
+    search_name = "Herbarium specimens from British native tree species worldwide",
     media_type = "StillImage",  
-    country = "GB",
+    country = "",
     has_coordinate = "",
     kingdom = "", 
     basis_of_record = "PRESERVED_SPECIMEN",
     institution_code = "", 
-    limit = "30"
+    limit = "500"
 ) 
 geodata_filter = SearchFilter(
     search_name = "Occurrence data from native trees in GB",
