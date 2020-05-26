@@ -56,8 +56,8 @@ if __name__ == "__main__":
     dest_path = os.path.join(base_path, dest_directory)
     #################################################
     # Train and test sizes
-    train_size = 90
-    test_size = 10
+    train_size = 80
+    test_size = 20
     # Seed for the random image sampling
     seed = 1234
     ###########################################
