@@ -11,14 +11,47 @@ from contextlib import redirect_stdout
 import pandas as pd
 import pydot_ng as pydot
 
+###########################################################################################
+# TO CONFIGURE 
+###########################################################################################
+# MODEL
+model_name = "vgg19_b1b2b3_pretrained"
+# load pre-trained model with the weights
+loaded_model = tf.keras.applications.VGG19()
+# layers to freeze in model (limit between frozen and not frozen layers)
+limit_layer = 11
+# LOCAL PATH
+local_path =  "/home/sciapps/Documents/Repos/tfm" # input("Enter local path (/path/tfm): ")
+# IMAGES DATA
+img_height = 224 
+img_width = 224
+color_mode= "rgb"
+
+
+############################################################################################
+# PATHS
+############################################################################################
+# DATA SET DIRECTORIES
+source_dir = "data/images/image_preprocessing/processed_images_train_val_test/"
+train_dir = os.path.join(local_path, source_dir, "train")
+val_dir = os.path.join(local_path, source_dir, "val")
+test_dir = os.path.join(local_path, source_dir, "test")
+
+# OUTPUTS
+save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name)
+# Create outputs folder
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir, exist_ok=True)
+
+# LABELS
+class_names = sorted(os.listdir(train_dir))
+print(f"Classes: {class_names}")
+
 ############################################################################################
 # MODEL CONFIGURATION 
 ############################################################################################
 # MODEL ARCHITECTURE
 ####################
-model_name = "xception"
-# load pre-trained model with the weights
-loaded_model = tf.keras.applications.Xception()
 # Add the layers of model to a new sequential model 
 model = Sequential()
 for layer in loaded_model.layers[:-1]: # remove last layer
@@ -26,10 +59,10 @@ for layer in loaded_model.layers[:-1]: # remove last layer
 # Rename model
 model._name = model_name
 model.name
-# Freeze the weights in the layers of blocks 1 and 2
-for layer in model.layers[:65]:
+# Freeze the weights in first blocks
+for layer in model.layers[:limit_layer]:
     layer.trainable = False
-for layer in model.layers[65:]:
+for layer in model.layers[limit_layer:]:
     layer.trainable = True
 # Add last layer for categories
 model.add(Dense(len(class_names), activation = "softmax"))
@@ -51,34 +84,11 @@ batch_size = 100
 epochs = 200  
 steps_per_epoch = 4
 
-############################################################################################
-# PATH CONFIGURATION 
-############################################################################################
-local_path = input("Enter local path (/path/tfm): ") # "/home/sciapps/Documents/Repos/tfm"
-
-# DATA SET DIRECTORIES
-source_dir = "data/images/image_preprocessing/processed_images_train_val_test/"
-train_dir = os.path.join(local_path, source_dir, "train")
-val_dir = os.path.join(local_path, source_dir, "val")
-test_dir = os.path.join(local_path, source_dir, "test")
-
-# OUTPUTS
-save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name)
-# Create outputs folder
-if not os.path.exists(save_dir):
-    os.makedirs(save_dir, exist_ok=True)
 
 ############################################################################################
 # INPUT TRAIN DATASET 
 ############################################################################################
-# LABELS
-class_names = sorted(os.listdir(train_dir))
-print(f"Class labels: {class_names}")
-
 # CONFIGURATION ImageDataGenerator 
-img_height = 299 
-img_width = 299
-color_mode= "rgb"
 class_mode="categorical"                                  
 shuffle=True                                                               
 seed = 1234 
