@@ -59,7 +59,7 @@ if __name__ == "__main__":
     base_path = "data/images/image_preprocessing/"
     ##############################################
     src_directory = "cropped_images"
-    dest_directory = "processed_images"
+    dest_directory = "processed_images_train_val_test"
     src_path = os.path.join(base_path, src_directory)
     dest_path = os.path.join(base_path, dest_directory)
     #################################################
