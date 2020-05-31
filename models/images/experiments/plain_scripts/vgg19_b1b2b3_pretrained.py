@@ -199,7 +199,6 @@ except:
         val_loss = history_dict["val_loss"]
     except:
         pass  
-epochs_range = range(epochs)
 
 try: 
     epochs_range = range(epochs)
@@ -207,11 +206,11 @@ try:
     plt.suptitle(model_name)
     # Accuracy plots
     plt.subplot(1, 2, 1)
-    plt.plot(epochs_range, acc*100, label="Training Accuracy")
-    plt.plot(epochs_range, val_acc*100, label="Validation Accuracy")
+    plt.plot(epochs_range, acc, label="Training Accuracy")
+    plt.plot(epochs_range, val_acc, label="Validation Accuracy")
     plt.legend(loc="lower right")
     plt.xlabel("Epochs")
-    plt.ylabel("%")
+    plt.ylabel("Accuracy")
     plt.title("Training and Validation Accuracy")
     # Loss plots
     plt.subplot(1, 2, 2)
@@ -220,6 +219,7 @@ try:
     plt.legend(loc="upper right")
     plt.title("Training and Validation Loss")
     plt.xlabel("Epochs")
+    plt.ylabel("Loss")
     plt.savefig(os.path.join(save_dir,"acc_loss_plot.png"))
     plt.show()
 except:
