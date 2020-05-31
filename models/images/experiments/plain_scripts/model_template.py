@@ -11,17 +11,30 @@ from contextlib import redirect_stdout
 import pandas as pd
 import pydot_ng as pydot
 
+def get_local_repository_path(repository_name):
+    """
+    Return local absolute path from home directory
+    to the repository folder (including it).
+    Arg.: Name of the repository.
+    """
+    wd_path = os.getcwd()
+    split_wd_path = wd_path.split("/")
+    tfm_position = split_wd_path.index(repository_name)
+    local_path_split = split_wd_path[:tfm_position+1]
+    return "/".join(local_path_split)
+
+
 ###########################################################################################
 # TO CONFIGURE 
 ###########################################################################################
 # MODEL
-model_name = "vgg19_b1b2b3_pretrained"
+model_name = "template"
 # load pre-trained model with the weights
 loaded_model = tf.keras.applications.VGG19()
 # layers to freeze in model (limit between frozen and not frozen layers)
 limit_layer = 11
 # LOCAL PATH
-local_path =  "/home/sciapps/Documents/Repos/tfm" # input("Enter local path (/path/tfm): ")
+local_path =  get_local_repository_path("tfm")
 # IMAGES DATA
 img_height = 224 
 img_width = 224
