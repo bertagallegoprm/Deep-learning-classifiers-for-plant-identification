@@ -174,13 +174,23 @@ model.save_weights(os.path.join(save_dir, "weights.h5"))
 # Parameters measured during model training
 history_dict = history.history
 print(history_dict.keys())
-acc = history_dict["acc"]
-val_acc = history_dict["val_acc"]
-loss = history_dict["loss"]
-val_loss = history_dict["val_loss"]
+try:
+    acc = history_dict["acc"]
+    val_acc = history_dict["val_acc"]
+    loss = history_dict["loss"]
+    val_loss = history_dict["val_loss"]
+except:
+    try:
+        acc = history_dict["accuracy"]
+        val_acc = history_dict["val_accuracy"]
+        loss = history_dict["loss"]
+        val_loss = history_dict["val_loss"]
+    except:
+        pass  
 epochs_range = range(epochs)
 
 try: 
+    epochs_range = range(epochs)
     plt.figure(figsize=(8, 8))
     plt.suptitle(model_name)
     # Accuracy plots
