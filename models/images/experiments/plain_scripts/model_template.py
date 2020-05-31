@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
 import pandas as pd
 import pydot_ng as pydot
+from datetime import datetime
 
 def get_local_repository_path(repository_name):
     """
@@ -23,6 +24,12 @@ def get_local_repository_path(repository_name):
     local_path_split = split_wd_path[:tfm_position+1]
     return "/".join(local_path_split)
 
+def get_timestamp():
+    """Get date and time for naming the files"""
+    timestamp = datetime.now()
+    timestamp_iso = timestamp.isoformat()
+    timestamp_iso_seconds = timestamp_iso[:-7] 
+    return timestamp_iso_seconds
 
 ###########################################################################################
 # TO CONFIGURE 
@@ -54,7 +61,8 @@ val_dir = os.path.join(local_path, source_dir, "val")
 test_dir = os.path.join(local_path, source_dir, "test")
 
 # OUTPUTS
-save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name)
+date = get_timestamp()
+save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name+)
 # Create outputs folder
 if not os.path.exists(save_dir):
     os.makedirs(save_dir, exist_ok=True)
