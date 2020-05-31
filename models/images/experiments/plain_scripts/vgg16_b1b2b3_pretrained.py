@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
 import pandas as pd
 import pydot_ng as pydot
+import graphviz
 
 def get_local_repository_path(repository_name):
     """
@@ -108,9 +109,13 @@ with open(os.path.join(save_dir,"model_summary.txt"), "w") as file:
         model.summary()
 
 # Plot model architecture and save it as .png
-rankdir = "TB" # TB: vertical; LR: horizontal
-plot_model(model, to_file = os.path.join(save_dir,"model_plot.png"), 
-           show_shapes=True, show_layer_names = True, rankdir = rankdir)
+try:
+    rankdir = "TB" # TB: vertical; LR: horizontal
+    plot_model(model, to_file = os.path.join(save_dir,"model_plot.png"), 
+            show_shapes=True, show_layer_names = True, rankdir = rankdir)
+except:
+    print("Unable to plot model.")
+    pass
 
 
 ############################################################################################

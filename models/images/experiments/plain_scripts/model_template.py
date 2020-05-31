@@ -67,7 +67,7 @@ print(f"Classes: {class_names}")
 with open(os.path.join(save_dir,"model_description.txt"), "w") as file:
     with redirect_stdout(file):
         print(model_description)
-        
+
 ############################################################################################
 # MODEL CONFIGURATION 
 ############################################################################################
@@ -94,11 +94,13 @@ with open(os.path.join(save_dir,"model_summary.txt"), "w") as file:
     with redirect_stdout(file):
         model.summary()
 
-# Plot model architecture and save it as .png
-rankdir = "TB" # TB: vertical; LR: horizontal
-plot_model(model, to_file = os.path.join(save_dir,"model_plot.png"), 
-           show_shapes=True, show_layer_names = True, rankdir = rankdir)
-
+try:
+    rankdir = "TB" # TB: vertical; LR: horizontal
+    plot_model(model, to_file = os.path.join(save_dir,"model_plot.png"), 
+            show_shapes=True, show_layer_names = True, rankdir = rankdir)
+except:
+    print("Unable to plot model.")
+    pass
 # MODEL TRAINING
 ################
 batch_size = 100
