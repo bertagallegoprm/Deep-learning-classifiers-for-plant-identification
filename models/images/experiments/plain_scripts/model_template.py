@@ -39,8 +39,11 @@ local_path =  get_local_repository_path("tfm")
 img_height = 224 
 img_width = 224
 color_mode= "rgb"
+# Model description
+model_description = f"""
+{model_name}
 
-
+"""
 ############################################################################################
 # PATHS
 ############################################################################################
@@ -60,6 +63,11 @@ if not os.path.exists(save_dir):
 class_names = sorted(os.listdir(train_dir))
 print(f"Classes: {class_names}")
 
+# Save model description
+with open(os.path.join(save_dir,"model_description.txt"), "w") as file:
+    with redirect_stdout(file):
+        print(model_description)
+        
 ############################################################################################
 # MODEL CONFIGURATION 
 ############################################################################################
