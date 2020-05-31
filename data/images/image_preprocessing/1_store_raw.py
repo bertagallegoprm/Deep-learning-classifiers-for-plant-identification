@@ -11,7 +11,7 @@ def create_raw_images_dir(base_path):
     from the image request.
     """
     raw_images_dir = "raw_images"
-    path_raw = base_path + raw_images_dir
+    path_raw = os.path.join(base_path,raw_images_dir)
     print(f"Creating directory: {path_raw}")
     try:
         shutil.rmtree(path_raw)
@@ -39,7 +39,7 @@ def copy_directories(source_path, destination_path, symlinks=False, ignore=None)
 
 if __name__ == "__main__":
     # Base path
-    base_path = "data/images/"
+    base_path = "data/images/image_preprocessing/"
     # Source directory
     filter_hash = filter_hash(images_filter, species_list.species_list)    
     source_path = f"data/images/image_request/{filter_hash}_images"
