@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
 import pandas as pd
 import pydot_ng as pydot
+import graphviz
+from datetime import datetime
 
 def get_local_repository_path(repository_name):
     """
@@ -23,14 +25,20 @@ def get_local_repository_path(repository_name):
     local_path_split = split_wd_path[:tfm_position+1]
     return "/".join(local_path_split)
 
+def get_timestamp():
+    """Get date and time for naming the files"""
+    timestamp = datetime.now()
+    timestamp_iso = timestamp.isoformat()
+    timestamp_iso_seconds = timestamp_iso[:-7] 
+    return timestamp_iso_seconds
 
 ###########################################################################################
 # TO CONFIGURE 
 ###########################################################################################
 # MODEL
-model_name = "template"
+model_name = "vgg16_b1b2b3_pretrained"
 # load pre-trained model with the weights
-loaded_model = tf.keras.applications.VGG19()
+loaded_model = tf.keras.applications.VGG16()
 # layers to freeze in model (limit between frozen and not frozen layers)
 limit_layer = 11
 # LOCAL PATH
@@ -39,11 +47,24 @@ local_path =  get_local_repository_path("tfm")
 img_height = 224 
 img_width = 224
 color_mode= "rgb"
+# MODEL TRAINING
+epochs = 500  
+steps_per_epoch = 4
 # Model description
 model_description = f"""
 {model_name}
-
+loaded_model = tf.keras.applications.VGG16()
+limit_layer = 11
+model = Sequential()
+for layer in loaded_model.layers[:-1]: 
+    model.add(layer)
+for layer in model.layers[:limit_layer]:
+    layer.trainable = False
+for layer in model.layers[limit_layer:]:
+    layer.trainable = True
+model.add(Dense(len(class_names), activation = "softmax"))
 """
+
 ############################################################################################
 # PATHS
 ############################################################################################
@@ -54,7 +75,8 @@ val_dir = os.path.join(local_path, source_dir, "val")
 test_dir = os.path.join(local_path, source_dir, "test")
 
 # OUTPUTS
-save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name)
+date = get_timestamp()
+save_dir = os.path.join(os.path.abspath(os.getcwd()), "outputs", model_name+"_"+date)
 # Create outputs folder
 if not os.path.exists(save_dir):
     os.makedirs(save_dir, exist_ok=True)
@@ -94,6 +116,7 @@ with open(os.path.join(save_dir,"model_summary.txt"), "w") as file:
     with redirect_stdout(file):
         model.summary()
 
+# Plot model architecture and save it as .png
 try:
     rankdir = "TB" # TB: vertical; LR: horizontal
     plot_model(model, to_file = os.path.join(save_dir,"model_plot.png"), 
@@ -101,11 +124,6 @@ try:
 except:
     print("Unable to plot model.")
     pass
-# MODEL TRAINING
-################
-batch_size = 100
-epochs = 200  
-steps_per_epoch = 4
 
 
 ############################################################################################

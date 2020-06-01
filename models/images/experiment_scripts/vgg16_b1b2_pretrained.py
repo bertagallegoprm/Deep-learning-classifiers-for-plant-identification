@@ -29,11 +29,11 @@ def get_local_repository_path(repository_name):
 # TO CONFIGURE 
 ###########################################################################################
 # MODEL
-model_name = "vgg16_b1b2b3_pretrained"
+model_name = "vgg16_b1b2_pretrained"
 # load pre-trained model with the weights
 loaded_model = tf.keras.applications.VGG16()
 # layers to freeze in model (limit between frozen and not frozen layers)
-limit_layer = 11
+limit_layer = 7
 # LOCAL PATH
 local_path =  get_local_repository_path("tfm")
 # IMAGES DATA
@@ -47,7 +47,7 @@ steps_per_epoch = 4
 model_description = f"""
 {model_name}
 loaded_model = tf.keras.applications.VGG16()
-limit_layer = 11
+limit_layer = 7
 model = Sequential()
 for layer in loaded_model.layers[:-1]: 
     model.add(layer)
