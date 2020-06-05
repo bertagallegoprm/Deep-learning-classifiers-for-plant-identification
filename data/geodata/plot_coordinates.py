@@ -82,6 +82,6 @@ if __name__ == "__main__":
     columns = ["species_name", "latitude", "longitude"])
 
     # Plot occurrences location
-    destination_path = "data/geodata/preprocessing/occurrences_map.png"
+    destination_path = "data/geodata/outputs/occurrences_map.png"
     shape_file = "data/geodata/uk_maps/GBR_adm0.shp" # UK map
     plot_occurrences_map(coordinates_df, shape_file, destination_path)
