@@ -47,7 +47,7 @@ def plot_coordenates_count(occurrence_count, species_name, path_to_plot):
     plt.savefig(path_to_plot)
 
 if __name__ == "__main__":
-    path_to_plot = "data/geodata/request_reports/georeference_per_species.png"
+    path_to_plot = "data/geodata/outputs/georeference_per_species.png"
     geodata = get_geodata_csv()
     species_name = unique(get_species_list(geodata))
     occurrence_count = get_occurrence_count(get_species_list(geodata))   

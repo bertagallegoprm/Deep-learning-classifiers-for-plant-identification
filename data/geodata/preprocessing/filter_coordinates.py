@@ -1,9 +1,10 @@
 import pandas as pd
+import os
 import matplotlib.pyplot as plt
 from data.search import filter_hash
 from data.config import geodata_filter, species_list
 from data.file_handler import create_dataframe_from_csv, column_to_list
-from data.geodata.preprocessing.plot_coordinates import plot_occurrences_map, plot_coordinates_frequency
+from data.geodata.plot_coordinates import plot_occurrences_map, plot_coordinates_frequency
 from data.geodata.plot_coordinates_per_species import plot_coordenates_count, unique, get_species_list, get_occurrence_count
 
 def which_none(column_as_list):
@@ -73,7 +74,7 @@ def drop_duplicate_coordinates(coordinates_df):
 if __name__ == "__main__":
 
     # Open CSV file with the occurrences data.
-    base_path = "data/geodata/request_reports/"
+    base_path = "data/geodata/request/outputs/"
     filter_hash = filter_hash(geodata_filter, species_list.species_list)
     csv_file_name = filter_hash + "_geodata.csv"
     df = create_dataframe_from_csv(base_path+csv_file_name)
@@ -111,23 +112,27 @@ if __name__ == "__main__":
     print(f"{len(coordinates_df)-len(filtered_df)} rows removed from geodata data set.")
 
     # Save filtered CSV
-    csv_file_name = "data/geodata/preprocessing/filtered_coordinates.csv"
+    save_dir = "data/geodata/preprocessing/outputs"
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir, exist_ok=True)
+
+    csv_file_name = os.path.join(save_dir, "filtered_coordinates.csv")
     filtered_df.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
     print(f"{csv_file_name} created.")
 
     # Plot filtered occurrences location
-    destination_path = "data/geodata/preprocessing/filtered_occurrences_map.png"
+    destination_path = os.path.join(save_dir, "filtered_occurrences_per_class.png")
     shape_file = "data/geodata/uk_maps/GBR_adm0.shp" # UK map
     plot_occurrences_map(filtered_df, shape_file, destination_path)
 
     # Plot occurrence count
-    path_to_plot = "data/geodata/preprocessing/filtered_georeference_per_species.png"
+    path_to_plot = os.path.join(save_dir, "filtered_distribution_map.png")
     geodata = filtered_df
     species_name = unique(get_species_list(geodata))
     occurrence_count = get_occurrence_count(get_species_list(geodata))   
     plot_coordenates_count(occurrence_count, species_name, path_to_plot)
 
     # Plot coordinates histogram
-    destination_path = "data/geodata/preprocessing/filtered_coordinates_distribution.png"
+    destination_path = os.path.join(save_dir, "filtered_histogram.png")
     plot_coordinates_frequency(coordinates_df, destination_path)
 
