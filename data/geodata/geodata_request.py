@@ -114,11 +114,11 @@ if __name__ == "__main__":
 
     # 5- Get occurrence data into a CSV file
     occurrence_data_table = get_occurrence_data(species_occurrences_keys)
-    csv_file_name = "data/geodata/request_reports/"+filter_hash+"_geodata.csv" 
+    csv_file_name = "data/geodata/outputs/"+filter_hash+"_geodata.csv" 
     occurrence_data_table.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
 
     # 6- Save filter and species information to text file
-    folder = "data/geodata/request_reports"
+    folder = "data/geodata/outputs"
     if not os.path.exists(folder):
         os.makedirs(folder)
     text_file_name = f"{folder}/{filter_hash}_geodata_filter.txt"

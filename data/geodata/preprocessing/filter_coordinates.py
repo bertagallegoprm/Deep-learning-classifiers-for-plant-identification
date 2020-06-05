@@ -73,7 +73,7 @@ def drop_duplicate_coordinates(coordinates_df):
 if __name__ == "__main__":
 
     # Open CSV file with the occurrences data.
-    base_path = "data/geodata/request_reports/"
+    base_path = "data/geodata/outputs/"
     filter_hash = filter_hash(geodata_filter, species_list.species_list)
     csv_file_name = filter_hash + "_geodata.csv"
     df = create_dataframe_from_csv(base_path+csv_file_name)
