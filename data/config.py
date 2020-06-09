@@ -1,5 +1,5 @@
 from data.search import SearchFilter, Species
-from data.species_names import native_trees_list
+from data.species_list import get_species_list
 from data.image import ImageDimension
 
 
@@ -25,7 +25,7 @@ geodata_filter = SearchFilter(
     limit = "100"
 )
 
-species_list = Species(species_list = native_trees_list())
+species_list = Species(species_list = get_species_list())
 ####################################################################
 
 # IMAGE PREPROCESSING ##############################################
