@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import hashlib
 import pdb
-from data.species_names import native_trees_list
 from data.common_api_request import get_taxon_key, get_occurence_key
 from data.config import geodata_filter, species_list
 from data.search import filter_hash
