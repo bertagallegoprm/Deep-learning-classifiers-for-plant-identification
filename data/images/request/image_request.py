@@ -54,12 +54,17 @@ def get_occurrence_image(species_occurrences_keys, folder):
 
 
 def species_without_speciesKey(species_list,species_taxon_key):
+    """
+    Return the species in the list with their corresponding taxon key
+    that are not in the original species list 
+    because the taxon key was not found.
+    """
     species_with_taxon_keys = list(species_taxon_key.keys())
     diff = list(set(species_list) - set(species_with_taxon_keys))
     if len(diff)==0:
         print("All species have a speciesKey.")
     else:
-        print(f"Species without a speciesKey:{diff}")
+        print(f"WARNING: Species without a speciesKey:{diff}")
     return diff
 
 
@@ -139,7 +144,7 @@ if __name__ == "__main__":
     filter_information = images_filter.filter_information()
     ## Hash the filter information + species list string to use it for naming the results file
     filter_hash = filter_hash(images_filter, species_list)     
-    print(f"Starting request '{search_name}' identified by: {filter_hash}.")
+    print(f"\nStarting request '{search_name}' identified by: {filter_hash}.")
 
     ## Save filter and species information to text file
     save_filter = open_filter_report(filter_hash)

@@ -10,7 +10,7 @@ def get_taxon_key(species_list):
     using its API.
     Return a dictionary for the species in the list passed as argument. 
     """
-    print("Getting GBIF taxon key for species in the list.")
+    print("\nGetting GBIF taxon key for species in the list.")
     base_url = "https://api.gbif.org/v1/"
     resource = "species/match"
     parameter = "name"
@@ -37,6 +37,7 @@ def get_occurence_key(species_taxon_key, filter):
     """
     Get data from GBIF using its API
     """
+    print("\nGetting GBIF occurrences keys for species in the list.")
     base_url = "https://api.gbif.org/v1/"
     occurences_dict = {}
     for species_name, taxon_key in species_taxon_key.items():
@@ -54,5 +55,5 @@ def get_occurence_key(species_taxon_key, filter):
         else:
             print("Error. Undetermined status code.")
         occurences_dict[species_name]=species_occurence_dict
-        #print(f"Number of occurrences for {species_name}: {occurrences['count']}")
+        print(f"Number of occurrences for {species_name}: {len(occurrences_results)}")
     return occurences_dict
