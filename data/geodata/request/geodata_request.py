@@ -11,12 +11,13 @@ from data.search import filter_hash
 def get_occurrence_data(species_occurrences_keys):
     """
     Given the species occurrence key
-    return a data frame with a series of parameters
+    return a data frame with a series of geographical parameters
     associated to the occurrence.
     """
     base_url = "https://api.gbif.org/v1/"
     column_names = ["species_name", "taxon_key", "occurrence_key", "basis_of_record", "institution_code","coordinate_system", "decimal_longitude", "decimal_latitude", "coordinate_uncertainty","elevation", "date", "issues"]
     df = pd.DataFrame(columns = column_names) 
+    count_species = 1
     for species_name, occurrences in species_occurrences_keys.items(): 
         taxon_key = species_taxon_key[species_name]     
         for occurrence in range(0,(len(occurrences))):          
@@ -82,8 +83,7 @@ def get_occurrence_data(species_occurrences_keys):
 
 if __name__ == "__main__":
 
-    # 1- Customize search parameters 
-    ###### Edit in config file   ##################
+    # 1- Import search parameters 
     # Species input
     species_list = species_list.species_list 
     # Search name
@@ -105,29 +105,30 @@ if __name__ == "__main__":
     filter_hash = filter_hash(geodata_filter, species_list)     
     print(f"Starting request '{search_name}' identified by: {filter_hash}.")    
 
-    # 3- Get species keys (same as taxon key) 
-    species_taxon_key = get_taxon_key(species_list)
-
-    # 4- Get occurrences keys 
-    species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
-
-    # 5- Get occurrence data into a CSV file
-    save_dir = "data/geodata/request/outputs"
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir, exist_ok=True)
-    occurrence_data_table = get_occurrence_data(species_occurrences_keys)
-    csv_file_name = "data/geodata/request/outputs/"+filter_hash+"_geodata.csv" 
-    occurrence_data_table.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
-
-    # 6- Save filter and species information to text file
+    # 3- Save filter and species information to text file
     folder = "data/geodata/request/outputs"
     if not os.path.exists(folder):
         os.makedirs(folder)
     text_file_name = f"{folder}/{filter_hash}_geodata_filter.txt"
     save_filter = open(text_file_name, "w")
     save_filter.write(f"{search_name}\n")
-    save_filter.write(f"{str(filter_information)}\n\n")
+    save_filter.write(f"{str(filter_information)}\n")
+    save_filter.write(f"Records download limit: {limit}\n\n")
     save_filter.write("Input species list:\n")
     for species in species_list:
         save_filter.write(f"{species}\n")
     save_filter.close()
+
+    # 4- Get species keys (same as taxon key) 
+    species_taxon_key = get_taxon_key(species_list)
+
+    # 5- Get occurrences keys 
+    species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
+
+    # 6- Get occurrence data into a CSV file
+    save_dir = "data/geodata/request/outputs"
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir, exist_ok=True)
+    occurrence_data_table = get_occurrence_data(species_occurrences_keys)
+    csv_file_name = "data/geodata/request/outputs/"+filter_hash+"_geodata.csv" 
+    occurrence_data_table.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8")
