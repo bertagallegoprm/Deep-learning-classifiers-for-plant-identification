@@ -10,6 +10,7 @@ def get_taxon_key(species_list):
     using its API.
     Return a dictionary for the species in the list passed as argument. 
     """
+    print("Getting GBIF taxon key for species in the list.")
     base_url = "https://api.gbif.org/v1/"
     resource = "species/match"
     parameter = "name"
@@ -21,8 +22,9 @@ def get_taxon_key(species_list):
                 species = response.json()
                 species_key = species["speciesKey"]
                 species_dict[species_name] = species_key
+                print(f"{species_name} identified by taxon key: {species_key}.")
             except:
-                #print(f"Unable to find speciesKey for {species_name}.")
+                print(f"Unable to find taxon key for {species_name}.")
                 pass
         elif response.status_code == 404:
             print('Error 404: Page not found.')
