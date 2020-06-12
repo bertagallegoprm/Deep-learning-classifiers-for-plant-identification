@@ -19,7 +19,7 @@ def get_occurrence_data(species_occurrences_keys):
     df = pd.DataFrame(columns = column_names) 
     count_species = 1
     for species_name, occurrences in species_occurrences_keys.items(): 
-        taxon_key = species_taxon_key[species_name]     
+        taxon_key = species_taxon_key[species_name]   
         for occurrence in range(0,(len(occurrences))):          
             occurrence_key = occurrences[occurrence]                
             response = requests.get(f"{base_url}occurrence/{occurrence_key}")
@@ -78,6 +78,8 @@ def get_occurrence_data(species_occurrences_keys):
                 print('Error 404: Page not found.')
             else:
                 print("Error. Undetermined status code.")  
+        print(f"{species_name} [sp.{count_species}/{len(species_occurrences_keys)}]: records downloaded")
+        count_species +=1
     return df
 
 
