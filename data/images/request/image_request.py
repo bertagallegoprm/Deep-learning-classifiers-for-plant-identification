@@ -5,7 +5,7 @@ import pandas as pd
 import hashlib
 import pdb
 from data.storage_handler import stop_if_size
-from data.common_api_request import get_taxon_key, get_occurence_key
+from data.common_api_request import get_taxon_key, get_occurence_key, species_without_speciesKey
 from data.config import images_filter, species_list
 from data.search import filter_hash
 
@@ -56,21 +56,6 @@ def get_occurrence_image(species_occurrences_keys, folder):
                 print("Error. Undetermined status code.") 
         count_species +=1 
     return has_image_dict                                                   
-
-
-def species_without_speciesKey(species_list,species_taxon_key):
-    """
-    Return the species in the list with their corresponding taxon key
-    that are not in the original species list 
-    because the taxon key was not found.
-    """
-    species_with_taxon_keys = list(species_taxon_key.keys())
-    diff = list(set(species_list) - set(species_with_taxon_keys))
-    if len(diff)==0:
-        print("All species have a speciesKey.")
-    else:
-        print(f"WARNING: Species without a speciesKey:{diff}")
-    return diff
 
 
 def get_results_table(species_occurrences_keys, occurrence_has_image):

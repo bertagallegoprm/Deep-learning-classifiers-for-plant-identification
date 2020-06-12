@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import hashlib
 import pdb
-from data.common_api_request import get_taxon_key, get_occurence_key
+from data.common_api_request import get_taxon_key, get_occurence_key, species_without_speciesKey
 from data.config import geodata_filter, species_list
 from data.search import filter_hash
 
@@ -78,7 +78,7 @@ def get_occurrence_data(species_occurrences_keys):
                 print('Error 404: Page not found.')
             else:
                 print("Error. Undetermined status code.")  
-        print(f"{species_name} [sp.{count_species}/{len(species_occurrences_keys)}]: records downloaded")
+        print(f"{species_name} [sp.{count_species}/{len(species_occurrences_keys)}]: records downloaded.")
         count_species +=1
     return df
 
@@ -123,6 +123,8 @@ if __name__ == "__main__":
 
     # 4- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)
+    ## Check if all species entered have a taxon key
+    species_without_speciesKey(species_list,species_taxon_key)
 
     # 5- Get occurrences keys 
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)

@@ -57,3 +57,18 @@ def get_occurence_key(species_taxon_key, filter):
         occurences_dict[species_name]=species_occurence_dict
         print(f"Number of occurrences for {species_name}: {len(occurrences_results)}")
     return occurences_dict
+
+
+def species_without_speciesKey(species_list,species_taxon_key):
+    """
+    Return the species in the list with their corresponding taxon key
+    that are not in the original species list 
+    because the taxon key was not found.
+    """
+    species_with_taxon_keys = list(species_taxon_key.keys())
+    diff = list(set(species_list) - set(species_with_taxon_keys))
+    if len(diff)==0:
+        print("All species have a speciesKey.")
+    else:
+        print(f"WARNING: Species without a speciesKey:{diff}")
+    return diff
