@@ -154,7 +154,8 @@ if __name__ == "__main__":
     ## Save filter and species information to text file
     save_filter = open_filter_report(filter_hash)
     save_filter.write(f"{search_name}\n")
-    save_filter.write(f"{str(filter_information)}\n\n")
+    save_filter.write(f"{str(filter_information)}\n")
+    save_filter.write(f"Image download limit: {limit}\n\n")
     save_filter.write("Input species list:\n")
     for species in species_list:
         save_filter.write(f"{species}\n")
