@@ -36,7 +36,7 @@ def image_result_to_csv(df, filter_hash):
     are stored in a new file, while results
     from the same filter are overwriten.
     """
-    folder = "data/images/image_request/request_reports"
+    folder = "data/images/request/outputs"
     if not os.path.exists(folder):
         os.makedirs(folder)
     csv_file_name = f"{folder}/{filter_hash}_request_results.csv"

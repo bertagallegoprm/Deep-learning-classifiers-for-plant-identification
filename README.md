@@ -70,25 +70,38 @@ sudo apt-get install graphviz
 
 ## Data download
 
-The data is available at the [Global Biodiversity Information Facility (GBIF) website](https://www.gbif.org/). 
+The data is available at the [Global Biodiversity Information Facility (GBIF) website](https://www.gbif.org/) and it can be dowloaded using its [API](https://www.gbif.org/developer/summary).
 
-It can be dowloaded using the [GBIF API](https://www.gbif.org/developer/summary). Here I use the Python [`requests` library](https://requests.readthedocs.io/en/master/).
+The filter for the download of the images and the geographical data must be configured separately.
 
-The images and the rest of the data are downloaded separately. 
+### Filter configuration
+
+The data download is filtered in basis of a **list of species** and several **parameters used as a filter in the API request**. They must be all configured into a CSV where the first column corresponds to the species names and the rest of the columns to the data request parameters. The filters considered are shown below. For more details see the API documentation.
+
+Custom filters:
+
+- Species names: must be an accepted species binomial name (Genus species).
+- search_name: a custom name to identify the search.
+
+API filters:
+
+- media_type: eg.: "StillImage" for images.
+- country: eg.: "GB" for United Kingdom.
+- has_coordinate: True / False
+- kingdom: eg.:"Plantae" 
+- basis_of_record: eg.: "PRESERVED_SPECIMEN"
+- institution_code: eg.: "K" for RBG Kew.
+- limit: eg.: 500. Default is 20 records per occurrence.
+
+There is an example of the filter configuration for the images and the geographical data download in `data/sample_inputs/`.
 
 ### Image download
-
-- Open `data/images/image_request/image_request.py` and customize search filters. I create a local copy of the file: `working_data_request.py` to iterate through filters without modifying the script in the repository.:
-
-    - Search name.
-    - API search filters.
-    - Input species.
 
 
 - Run from the main directory (tfm):
 
 ```
-python3 -m data.images.image_request.image_request 
+python3 -m data.geodata.images.image_request.image_request [data/sample_inputs/image_filter.csv]
 ```
 
 
@@ -111,24 +124,19 @@ python3 -m data.images.image_request.image_request_summary
    
    To print in the terminal a count of the totals in the summary table run: `python3 -m data.images.image_request.image_request_summary_totals`
 
-### Occurrence data download
 
-- Open `geodata/geodata_request.py` and customize search filters. I create a local copy of the file: `working_geodata_request.py` to iterate through filters without modifying the script in the repository.:
-
-    - Search name.
-    - API search filters.
-    - Input species.
+### Geographical data download
 
 
 - Run from the main directory (tfm):
 
 ```
-python3 -m data.geodata.geodata_request 
+python3 -m data.geodata.request.geodata_request [data/sample_inputs/geodata_filter.csv]
 ```
 
 - Output:
 
-    - Two files are created in `data/geodata/request_reports` folder: 
+    - Two files are created in `data/geodata/request/outputs` folder: 
 
         - a CSV file with the taxon key, occurrence key and the data associated (of interest for the classification: geographical and date). 
         - a text file with the filter applied to the search (input list of species and request parameters). 

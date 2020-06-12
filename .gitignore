@@ -1,8 +1,6 @@
 __pycache__
 .vscode
 *.jpg
-!data/images/sample_images/*.jpg
-working_data_request.py
 
 # virtual environment directory
 env
@@ -12,3 +10,4 @@ env
 
 # models outputs
 outputs
+inputs
