@@ -1,5 +1,5 @@
 species_name,search_name,media_type,country,has_coordinate,kingdom,basis_of_record,institution_code,limit
-Alnus glutinosa,TEST,StillImage,GB,,,PRESERVED_SPECIMEN,,5
+Alnus glutinosa,Herbarium specimens from British native tree species worldwide,StillImage,,,,PRESERVED_SPECIMEN,,500
 Frangula alnus,,,,,,,,
 Fraxinus excelsior,,,,,,,,
 Populus tremula,,,,,,,,

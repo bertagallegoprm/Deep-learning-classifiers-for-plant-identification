@@ -1,5 +1,5 @@
 species_name,search_name,media_type,country,has_coordinate,kingdom,basis_of_record,institution_code,limit
-Alnus glutinosa,TEST,,,TRUE,,,,5
+Alnus glutinosa,Geographical data from native trees in GB,,GB,TRUE,,,,600
 Frangula alnus,,,,,,,,
 Fraxinus excelsior,,,,,,,,
 Populus tremula,,,,,,,,
