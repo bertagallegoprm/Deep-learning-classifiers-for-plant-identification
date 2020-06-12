@@ -1,8 +1,8 @@
-Herbarium specimens images from native trees in GB
+Herbarium specimens from British native tree species worldwide
 
     Filters:
     mediaType: StillImage
-    country: GB
+    country: 
     hasCoordinate: 
     kingdom:
     basisOfRecord: PRESERVED_SPECIMEN
@@ -55,4 +55,3 @@ Salix caprea
 Salix cinerea subsp. oleifolia
 Salix viminalis
 Salix alba
-Taxus baccata

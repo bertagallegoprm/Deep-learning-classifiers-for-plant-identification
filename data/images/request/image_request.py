@@ -4,9 +4,7 @@ import os
 import pandas as pd
 import hashlib
 import pdb
-from data.species_names import native_trees_list
 from data.storage_handler import stop_if_size
-from data.file_handler import image_result_to_csv, open_filter_report
 from data.common_api_request import get_taxon_key, get_occurence_key
 from data.config import images_filter, species_list
 from data.search import filter_hash
@@ -88,12 +86,42 @@ def get_results_table(species_occurrences_keys, occurrence_has_image):
     return df
 
 
+def image_result_to_csv(df, filter_hash):
+    """
+    Create a CSV file with the results
+    of the data request to GBIF
+    and name it with a hash of the filter applied.
+    Results from different filters 
+    are stored in a new file, while results
+    from the same filter are overwriten.
+    """
+    folder = "data/images/request/outputs"
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    csv_file_name = f"{folder}/{filter_hash}_request_results.csv"
+    df.to_csv(csv_file_name, sep = ",", header = True, index = None, encoding="utf-8") 
+    print(""+csv_file_name+" file created.")
+
+
+def open_filter_report(filter_hashed):
+    """
+    Open a text file with the following naming format:
+    md5hash_request_filter.txt
+    Example: 2020-03-31T22:00:00_request_summary.txt
+    """
+    folder = "data/images/request/outputs"
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    text_file_name = f"{folder}/{filter_hashed}_image_filter.txt"
+    print(f"{text_file_name} file created.")
+    return open(text_file_name, "w")
+
+
 if __name__ == "__main__":
 
-    # 1- Customize search parameters 
+    # 1- Import search parameters 
     # Species input
     species_list = species_list.species_list
-    ###### Edit in config file   ##################
     # Search name
     search_name = images_filter.search_name 
     # Filter parameters
@@ -113,6 +141,15 @@ if __name__ == "__main__":
     filter_hash = filter_hash(images_filter, species_list)     
     print(f"Starting request '{search_name}' identified by: {filter_hash}.")
 
+    ## Save filter and species information to text file
+    save_filter = open_filter_report(filter_hash)
+    save_filter.write(f"{search_name}\n")
+    save_filter.write(f"{str(filter_information)}\n\n")
+    save_filter.write("Input species list:\n")
+    for species in species_list:
+        save_filter.write(f"{species}\n")
+    save_filter.close()
+
     # 3- Get species keys (same as taxon key) 
     species_taxon_key = get_taxon_key(species_list)
     ## Check if all species entered have a taxon key
@@ -122,18 +159,11 @@ if __name__ == "__main__":
     species_occurrences_keys = get_occurence_key(species_taxon_key, filter)
 
     # 5- Get images from occurrences
-    folder = "data/images/image_request/"+filter_hash + "_images"
+    folder = "data/images/request/outputs/"+filter_hash + "_images"
     occurrence_has_image = get_occurrence_image(species_occurrences_keys, folder)
 
     # 6-  Save results information for the applied filter
     ## Save results summary to csv file
     result_df = get_results_table(species_occurrences_keys, occurrence_has_image)
     image_result_to_csv(result_df, filter_hash)
-    ## Save filter and species information to text file
-    save_filter = open_filter_report(filter_hash)
-    save_filter.write(f"{search_name}\n")
-    save_filter.write(f"{str(filter_information)}\n\n")
-    save_filter.write("Input species list:\n")
-    for species in species_list:
-        save_filter.write(f"{species}\n")
-    save_filter.close()
+
