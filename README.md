@@ -1,4 +1,4 @@
-# TFM 
+# Deep learning classifiers for plant identification 
 
 ## Getting started
 
